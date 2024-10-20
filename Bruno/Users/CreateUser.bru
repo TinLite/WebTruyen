@@ -1,0 +1,20 @@
+meta {
+  name: CreateUser
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/users/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username":"Võ QUang Vinh",
+    "password":"123",
+    "displayname":"tinli",
+    "email":"vinh@gmail.com"
+  }
+}

@@ -6,6 +6,9 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { FollowsModule } from './follows/follows.module';
+import { RateModule } from './rate/rate.module';
+import { UtilsModule } from './utils/utils.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -14,6 +17,9 @@ import { FollowsModule } from './follows/follows.module';
     PostsModule,
     CommentsModule,
     FollowsModule,
+    RateModule,
+    UtilsModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

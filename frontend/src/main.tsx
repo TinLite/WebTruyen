@@ -4,6 +4,8 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import LayoutMain from './layout/layout-main.tsx'
 import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material'
+import Register from './page/register.tsx'
+import Login from './page/login.tsx'
 
 const rootElement = document.getElementById('root')!;
 
@@ -17,7 +19,14 @@ const router = createBrowserRouter([
         element: <h1>Home</h1>
       }
     ]
+  },
+  { path: '/register', 
+    element: <Register /> }, 
+  {
+    path: '/login',
+    element: <Login />
   }
+
 ]);
 
 const theme = createTheme({

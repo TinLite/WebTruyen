@@ -1,88 +1,173 @@
-//import React from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
+import {Box,Button,Container,CssBaseline,TextField,Typography,Paper,Grid,Link,} from '@mui/material';
 
 const Register = () => {
-    const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [loading, setLoading] = useState(false);
-
-    const onSubmit = async () => {
-        setLoading(true);
-        try {
-            navigate('/');
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+  
+    const handleSubmit = (event: React.FormEvent) => {
+      event.preventDefault();
+      console.log('Name:', name);
+      console.log('Email:', email);
+      console.log('Phone:', phone);
+      console.log('Password:', password);
     };
-    return (
-        <div className='h-screen w-screen bg-blue-950 bg-opacity-25 backdrop-blur-sm grid place-items-center'>
-            <div className="justify-center px-10 py-2 w-full max-w-sm bg-[#001731] rounded-xl shadow-2xl">
-                <h1 className='className="text-center text-2xl leading-8 font-normal tracking-tight text-[#F0FCFF] mt-4 mb-6'>Đăng ký</h1>
-                <div>
-                    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                id="name"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Tên"
-                                {...register('name', { required: true })}
-                            />
-                            {errors.name && <p className="text-white text-sm mt-2" hidden>Tên không được để trống</p>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="email"
-                                id="email"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Email"
-                                {...register('email', { required: true, pattern: /^\S+@\S+$/i })}
-                            />
-                            {errors.email && <p className="text-white text-sm mt-2" hidden>Email không đúng định dạng</p>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                id="name"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Số Điện Thoại"
-                                {...register('telephone', { required: true })}
-                            />
-                            {errors.name && <p className="text-white text-sm mt-2" hidden>Sđt không được để trống</p>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="password"
-                                id="password"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Mật khẩu"
-                                {...register('password', { required: true, minLength: 6 })}
-                            />
-                            {errors.password && <p className="text-white text-sm mt-2" hidden>Mật khẩu phải có ít nhất 6 ký tự</p>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                id="name"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Nhập lại mật khẩu"
-                                {...register('password', { required: true, minLength: 6 })}
-                            />
-                            {errors.password && <p className="text-white text-sm mt-2" hidden>Phải nhập lại mật khẩu</p>}
-                        </div>
-                        <button type="submit" className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-                            {loading ? 'Đang xử lý...' : 'Đăng ký'}
-                        </button>
-                        <span className='text-white text-sm mt-2'>Nếu bạn đã có tài khoản </span><a href="/login" className=" w-full py-3 text-white rounded-lg transition duration-200">Đăng nhập</a>:
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
+
+  return (
+    <Grid
+      container
+      component="main"
+      sx={{
+        height: '100vh',
+        backgroundImage: 'url(https://store.gkids.com/cdn/shop/products/096_1245x700.jpg?v=1675792844)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: (t) =>
+          t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        position: 'relative',
+      }}
+    >
+      <CssBaseline />
+      {
+        
+      }
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+        }}
+      />
+      <Container component="main" maxWidth="xs" sx={{ zIndex: 2, position: 'relative' }}>
+      <Paper
+            elevation={3}
+            sx={{
+              padding: 4,
+              borderRadius: 3,
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              color: 'white',
+              mt: 5,
+            }}
+          >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography component="h1" variant="h5">
+              Đăng ký tài khoản
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="Tên của bạn"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="phone"
+                label="SDT"
+                name="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Mật khẩu"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Nhập lại mật khẩu "
+                type="password"
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3, mb: 2, borderRadius: 2 }}
+              >
+                Đăng ký
+              </Button>
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Typography variant="body2">
+                  Bạn đã có tài khoản? Hãy {' '}
+                  <Link href="/login" variant="body2" color="primary">
+                    Đăng nhập.
+                  </Link>
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
+      </Container>
+    </Grid>
+  );
 };
 
 export default Register;

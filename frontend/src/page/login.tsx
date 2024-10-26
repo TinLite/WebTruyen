@@ -1,60 +1,131 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useForm, SubmitHandler } from 'react-hook-form';
-
+import {Box,Button,Container,CssBaseline,TextField,Typography,Paper,Grid,Link,} from '@mui/material';
 
 const Login = () => {
-    const navigate = useNavigate();
+  const [name , setName] = useState('');
+  const [password, setPassword] = useState('');
 
-    const { register, handleSubmit, formState: { errors } } = useForm<{ name: string; password: string; }>();
-    const [loading, setLoading] = useState(false);
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    console.log('Name:', name);
+    console.log('Password:', password);
+  };
 
-    const onSubmit: SubmitHandler<{ name: string; password: string; }> = async (data) => {
-        setLoading(true);
-        try {
-            navigate('/');
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className='h-screen w-screen bg-blue-950 bg-opacity-25 backdrop-blur-sm grid place-items-center'>
-            <div className="justify-center px-10 py-2 w-full max-w-sm bg-[#001731] rounded-xl shadow-2xl">
-                <h1 className="text-center text-2xl leading-8 font-normal tracking-tight text-[#F0FCFF] mt-4 mb-6">Đăng nhập</h1>
-                <div>
-                    <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
-                        <div className="form-group">
-                            <input
-                                type="text"
-                                id="name"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Tên"
-                                {...register('name', { required: true, minLength: 3 })}
-                            />
-                            {errors.name && <p className="text-white text-sm mt-2" hidden>Tên không được để trống và phải có ít nhất 3 ký tự</p>}
-                        </div>
-                        <div className="form-group">
-                            <input
-                                type="password"
-                                id="password"
-                                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-600 bg-transparent text-white"
-                                placeholder="Mật khẩu"
-                                {...register('password', { required: true, minLength: 6 })}
-                            />
-                            {errors.password && <p className="text-white text-sm mt-2" hidden>Mật khẩu phải có ít nhất 6 ký tự</p>}
-                        </div>
-                        <button type="submit" className="w-full py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200" disabled={loading}>
-                            {loading ? 'Đang xử lý...' : 'Đăng nhập'}
-                        </button>
-                        <span className='text-white text-sm mt-2'>Nếu bạn chưa có tài khoản </span><a href="/register" className=" w-full py-3 text-white rounded-lg transition duration-200">Đăng ký</a>:
-                    </form>
-                </div>
-            </div>
-        </div>
-    );
+  return (
+    <Grid
+      container
+      component="main"
+      sx={{
+        height: '100vh',
+        backgroundImage: 'url(https://wallpapercave.com/wp/wp9523242.jpg)',
+        backgroundRepeat: 'no-repeat',
+        backgroundColor: (t) =>
+          t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        position: 'relative',
+      }}
+    >
+      <CssBaseline />
+      {
+        
+      }
+      <Box
+        sx={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 1,
+        }}
+      />
+     <Grid
+        item
+        xs={12}
+        md={6}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-end',  
+          zIndex: 2,
+          position: 'relative',
+          paddingRight: 8,
+        }}
+      ></Grid>
+      <Container component="main" maxWidth="xs" sx={{ zIndex: 2, position: 'relative' }}>
+        <Paper
+          elevation={3}
+          sx={{
+            padding: 4,
+            borderRadius: 3,
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            color: 'white',
+            mt: 20,
+          }}
+        >
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <Typography component="h1" variant="h5">
+              Đăng nhập
+            </Typography>
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="name"
+                label="Tên người dùng"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Mật khẩu"
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  style: { color: 'white' },
+                }}
+                InputLabelProps={{
+                  style: { color: 'white' },
+                }}
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                sx={{ mt: 3, mb: 2, borderRadius: 2 }}
+              >
+                Đăng nhập
+              </Button>
+              <Box display="flex" justifyContent="center" mt={2}>
+                <Typography variant="body2">
+                  Bạn chưa có tài khoản?{' '}
+                  <Link href="/register" variant="body2" color="primary">
+                    Tạo tài khoản
+                  </Link>
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+        </Paper>
+      </Container>
+    </Grid>
+  );
 };
 
 export default Login;

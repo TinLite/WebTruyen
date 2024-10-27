@@ -39,6 +39,14 @@ export class UsersService {
     // return await this.usersModel.findById(id).select('+email').exec();
     return await this.usersModel.findOne({ _id: id, status: true }).exec();
   }
+  
+  async findByEmailWithPassword(email: string) {
+    return await this.usersModel.findOne({ email }).select('+password').exec();
+  }
+  //find User by email
+  async findByEmail(email: string): Promise<Users> {
+    return await this.usersModel.findOne({ email:email }).exec();
+  }
   //Update User
   async update(id: string, updateUserDto: UpdateUserDto) {
     const updateUser = await this.usersModel

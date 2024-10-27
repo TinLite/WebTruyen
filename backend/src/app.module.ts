@@ -9,9 +9,14 @@ import { FollowsModule } from './follows/follows.module';
 import { RateModule } from './rate/rate.module';
 import { UtilsModule } from './utils/utils.module';
 import { AuthModule } from './auth/auth.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     MongooseModule.forRoot('mongodb://localhost:27017/nettruyen'),
     UsersModule,
     PostsModule,
@@ -20,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     RateModule,
     UtilsModule,
     AuthModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

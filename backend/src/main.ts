@@ -13,15 +13,15 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
 
   const sessionSecret = configService.get('SESSION_SECRET');
-  const sessionMaxAge = configService.get('SESSION_MAX_AGE');
+  const sessionMaxAge = Number(configService.get('SESSION_MAX_AGE'));
   const redisUrl = `redis://${configService.get('REDIS_HOST')}:${configService.get('REDIS_PORT')}`;
   let redisClient = createClient({
     url: redisUrl,
   });
+  redisClient.on('error', console.error);
   redisClient.connect().catch(console.error);
   let redisStore = new RedisStore({ client: redisClient, prefix: 'myapp:' });
 
-  await app.listen(3000);
   app.use(
     session({
       store: redisStore,
@@ -32,7 +32,12 @@ async function bootstrap() {
     }),
   );
 
+  console.log(`Session secret: ${sessionSecret}, max age: ${sessionMaxAge}`);
+  console.log(`Redis URL: ${redisUrl}`);
+
   app.use(passport.initialize());
   app.use(passport.session());
+
+  await app.listen(3000);
 }
 bootstrap();

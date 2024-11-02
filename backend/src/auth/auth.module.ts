@@ -6,7 +6,7 @@ import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './passport/local.strategy';
 
 @Module({
-  imports: [UsersModule, PassportModule.register({ defaultStrategy: 'local' })],
+  imports: [UsersModule, PassportModule.register({ defaultStrategy: 'local', session: true })],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy],
   exports: [AuthService],

@@ -20,7 +20,8 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-  return this.authService.login(req.user);
+    // const loginResult = await this.authService.login(req.user);
+    req.session.user = req.user;
   }
 
   @Get('protected')
@@ -28,6 +29,6 @@ export class AuthController {
     if (!req.session.user) {
       return { message: 'Unauthorized access' };
     }
-    return { message: 'Protected data', user: req.session.user };
+    return { message: 'Protected data', user: req.session.userId };
   }
 }

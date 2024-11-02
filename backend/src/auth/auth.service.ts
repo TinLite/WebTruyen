@@ -15,8 +15,4 @@ export class AuthService {
     }
     return user;
   }
-
-  async login(user: any) {
-    return user;
-  }
 }

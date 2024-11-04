@@ -15,7 +15,7 @@ export class Story {
   })
   AuthorId: Users;
   @Prop()
-  CoverImage: string;
+  CoverImage?: string[];
   @Prop({
     default: Date.now,
   })

@@ -33,13 +33,13 @@ export class StoryController {
   create(
     @Body() createStoryDto: CreateStoryDto,
     @User() userSession,
-    @UploadedFiles() files: { files: Express.Multer.File[] },
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
     if (!userSession) {
       throw new Error('User not authenticated');
     }
     createStoryDto.AuthorId = userSession.id;
-    return this.storyService.create(createStoryDto);
+    return this.storyService.create(createStoryDto,files);
   }
 
   @Get()

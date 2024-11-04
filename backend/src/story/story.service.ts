@@ -12,17 +12,18 @@ export class StoryService {
     @InjectModel(Story.name) private readonly storyModel: Model<Story>,
     private readonly cloudinaryService: CloudinaryService,
   ) {}
+
   async create(createStoryDto: CreateStoryDto, files?: Express.Multer.File[]) {
     if (files && files.length > 0) {
-      const uploadImages = await Promise.all(files.map(file => this.cloudinaryService.uploadFile(file)));
-      createStoryDto.CoverImage = uploadImages[0];
-    } else {
-      throw new Error('No file uploaded');
+      const uploadImages = await Promise.all(
+        files.map((file) => this.cloudinaryService.uploadFile(file)),
+      );
+      createStoryDto.CoverImage = uploadImages;
     }
     const data = await this.storyModel.create(createStoryDto);
     return {
       _id: data._id,
-      img: data.CoverImage,
+      img: data.CoverImage || [],
     };
   }
 

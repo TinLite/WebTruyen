@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import mongoose, { mongo } from 'mongoose';
 import { userInfo } from 'os';
+import { Story } from 'src/story/schemas/story.schema';
 
 @Schema()
 export class Users {
@@ -25,9 +27,9 @@ export class Users {
   })
   created_at: Date;
   @Prop({
-    default: '[]',
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Story' }],
   })
-  followstory: [];
+  followedStory: Story[];
   @Prop({
     default: '[]',
   })

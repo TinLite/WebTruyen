@@ -20,7 +20,10 @@ async function bootstrap() {
   });
   redisClient.on('error', console.error);
   redisClient.connect().catch(console.error);
-  let redisStore = new RedisStore({ client: redisClient, prefix: 'myapp:' });
+  let redisStore = new RedisStore({
+    client: redisClient,
+    prefix: 'nettruyen:',
+  });
 
   app.use(
     session({
@@ -32,8 +35,8 @@ async function bootstrap() {
     }),
   );
 
-  console.log(`Session secret: ${sessionSecret}, max age: ${sessionMaxAge}`);
-  console.log(`Redis URL: ${redisUrl}`);
+  // console.log(`Session secret: ${sessionSecret}, max age: ${sessionMaxAge}`);
+  // console.log(`Redis URL: ${redisUrl}`);
 
   app.use(passport.initialize());
   app.use(passport.session());

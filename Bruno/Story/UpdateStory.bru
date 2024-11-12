@@ -1,0 +1,15 @@
+meta {
+  name: UpdateStory
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://localhost:3000/api/story/update/672ec750f960612c88601d56
+  body: multipartForm
+  auth: none
+}
+
+body:multipart-form {
+  files: @file(C:\Users\lequa\OneDrive\Hình ảnh\Saved Pictures\star.jpg)
+}

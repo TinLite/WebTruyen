@@ -1,4 +1,12 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateStoryDto } from './create-story.dto';
+import { IsNotEmpty, IsOptional } from 'class-validator';
 
-export class UpdateStoryDto extends PartialType(CreateStoryDto) {}
+export class UpdateStoryDto {
+  @IsOptional()
+  title: string;
+  @IsOptional()
+  description: string;
+  @IsOptional()
+  genre: string;
+  @IsOptional()
+  coverImage?: string[];
+}

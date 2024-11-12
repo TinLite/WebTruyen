@@ -5,7 +5,21 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:3000/api/story/create
+  body: multipartForm
   auth: none
+}
+
+body:json {
+  {
+    "title":"doraemon",
+    "description":"aaaaa",
+    "genre":"anime"
+  }
+}
+
+body:multipart-form {
+  title: test
+  description: Truyện kể về hành trình thu phục các Pokemon của cậu bé Satoshi
+  genre: truyện tranh
 }

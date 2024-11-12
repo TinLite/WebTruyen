@@ -6,11 +6,13 @@ import { Users } from './schemas/users.schema';
 import { Model } from 'mongoose';
 import { UtilsService } from '../utils/utils.service';
 import e from 'express';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(Users.name) private readonly usersModel: Model<Users>,
+    private readonly cloudinaryService: CloudinaryService,
   ) {}
 
   //Create User
@@ -35,24 +37,38 @@ export class UsersService {
   }
 
   //findOne User
-  async findOne(id: string): Promise<Users> {
+  async findOne(id: string){
     // return await this.usersModel.findById(id).select('+email').exec();
     return await this.usersModel.findOne({ _id: id, status: true }).exec();
   }
-  
+
   async findByEmailWithPassword(email: string) {
     return await this.usersModel.findOne({ email }).select('+password').exec();
   }
   //find User by email
   async findByEmail(email: string): Promise<Users> {
-    return await this.usersModel.findOne({ email:email }).exec();
+    return await this.usersModel.findOne({ email: email }).exec();
   }
   //Update User
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    const updateUser = await this.usersModel
-      .updateOne({ _id: id }, updateUserDto)
-      .exec();
-    return updateUser;
+  async update(
+    id: string,
+    updateUserDto: UpdateUserDto,
+    files?: { avatar?: Express.Multer.File; wall?: Express.Multer.File },
+  ) {
+    if (files) {
+      if (files.avatar) {
+        const avtImg = await this.cloudinaryService.uploadFile(files.avatar);
+        updateUserDto.avatar = avtImg;
+      }
+      if (files.wall) {
+        const wallImg = await this.cloudinaryService.uploadFile(files.wall);
+        updateUserDto.wall = wallImg;
+      }
+    }
+     const updateUser = await this.usersModel
+        .updateOne({ _id: id }, updateUserDto)
+        .exec();
+      return updateUser;
   }
   //delete User
   async delete(id: string) {

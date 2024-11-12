@@ -12,6 +12,7 @@ import { ConfigModule } from '@nestjs/config';
 import { StoryModule } from './story/story.module';
 import { HistoryModule } from './history/history.module';
 import { ChapterModule } from './chapter/chapter.module';
+import { FollowsModule } from './follows/follows.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ChapterModule } from './chapter/chapter.module';
     StoryModule,
     HistoryModule,
     ChapterModule,
+    FollowsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

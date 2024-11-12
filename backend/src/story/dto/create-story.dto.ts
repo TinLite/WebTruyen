@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 import { Schema } from 'mongoose';
 
 export class CreateStoryDto {
@@ -8,7 +8,7 @@ export class CreateStoryDto {
   description: string;
   @IsString()
   genre: string;
-  @IsNotEmpty()
-  AuthorId: Schema.Types.ObjectId;
-  CoverImage?: string[];
+  @IsOptional()
+  authorId: Schema.Types.ObjectId;
+  coverImage?: string[];
 }

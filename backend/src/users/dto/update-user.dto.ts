@@ -14,8 +14,8 @@ export class UpdateUserDto {
   email: string;
 
   @IsOptional()
-  avatar: string;
+  avatar?: string;
 
   @IsOptional()
-  wall: string;
+  wall?: string;
 }

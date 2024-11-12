@@ -5,7 +5,12 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:3000/api/cloudinary/images
+  body: multipartForm
   auth: none
+}
+
+body:multipart-form {
+  files: @file(C:\Users\lequa\OneDrive\Hình ảnh\Saved Pictures\432787469_951994392979180_2193080079577116366_n.jpg)
+  files: @file(C:\Users\lequa\OneDrive\Hình ảnh\Saved Pictures\b812e04bd33917512a577b896eae8d11.jpg)
 }

@@ -57,11 +57,13 @@ export class UsersService {
   ) {
     if (files) {
       if (files.avatar) {
-        const avtImg = await this.cloudinaryService.uploadFile(files.avatar);
+        const folder = process.env.CLOUDINARY_FOLDER;
+        const avtImg = await this.cloudinaryService.uploadFile(files.avatar, folder);
         updateUserDto.avatar = avtImg;
       }
       if (files.wall) {
-        const wallImg = await this.cloudinaryService.uploadFile(files.wall);
+        const folder = process.env.CLOUDINARY_FOLDER;
+        const wallImg = await this.cloudinaryService.uploadFile(files.wall,folder);
         updateUserDto.wall = wallImg;
       }
     }

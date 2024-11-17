@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import * as session from 'express-session';
@@ -20,8 +21,23 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Request() req) {
-    // const loginResult = await this.authService.login(req.user);
+    if (req.session.user) {
+      throw new ForbiddenException('You are already logged in');
+    }
     req.session.user = req.user;
+    return req.user;
+  }
+
+  @Post('logout')
+  async logout(@Request() req) {
+    if (!req.session.user) {
+      throw new ForbiddenException('You are not logged in');
+    }
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+      }
+    });
   }
 
   @Get('protected')
@@ -29,6 +45,6 @@ export class AuthController {
     if (!req.session.user) {
       return { message: 'Unauthorized access' };
     }
-    return { message: 'Protected data', user: req.session.userId };
+    return { message: 'Protected data', user: req.session.user };
   }
 }

@@ -1,34 +1,41 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  NotFoundException,
+  Param,
+  Post,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { FollowsService } from './follows.service';
-import { CreateFollowDto } from './dto/create-follow.dto';
-import { UpdateFollowDto } from './dto/update-follow.dto';
-
+import { User } from 'src/auth/user.decorator';
+import { UsersService } from 'src/users/users.service';
 @Controller('follows')
 export class FollowsController {
-  constructor(private readonly followsService: FollowsService) {}
+  constructor(
+    private readonly followsService: FollowsService,
+    private readonly usersService: UsersService,
+  ) {}
 
-  @Post()
-  create(@Body() createFollowDto: CreateFollowDto) {
-    return this.followsService.create(createFollowDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.followsService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.followsService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFollowDto: UpdateFollowDto) {
-    return this.followsService.update(+id, updateFollowDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.followsService.remove(+id);
+  @Post('/add/:storyId')
+  async followStory(@Param('storyId') storyId: string, @User() userSession) {
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    // console.log(userSession);
+    const user = await this.followsService.findOneUser(userSession.id);
+    // console.log(user);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    if (!user.followstory) {
+      user.followstory = [];
+    }
+    if(user.followstory.includes(storyId)) {
+      throw new BadRequestException('Story already followed');
+    }
+    console.log(userSession.id, storyId);
+    return await this.followsService.followStory(userSession.id, storyId);
   }
 }
+
+

@@ -6,17 +6,13 @@ meta {
 
 get {
   url: http://localhost:3000/api/auth/protected
-  body: none
+  body: json
   auth: none
-}
-
-headers {
-  Cookie: connect.sid=s%3AdDC36EstPT6MYH9wBwjUHiZYrTSuEuYz.8V1a7xt1D5WgPkmo0Qq4l7O6jutC8ZcrTILp7w0GZ%2Fc; Path=/; Expires=Mon, 28 Oct 2024 07:17:34 GMT; HttpOnly
 }
 
 body:json {
   {
-    "username":"vinh123@gmail.com",
+    "username":"tien@gmail.com",
     "password":"123"
   }
 }

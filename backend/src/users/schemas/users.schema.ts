@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { userInfo } from 'os';
+import mongoose, { mongo } from 'mongoose';
+import { Story } from 'src/story/schemas/story.schema';
 
 @Schema()
 export class Users {
@@ -15,9 +16,10 @@ export class Users {
     select: false,
   })
   email: string;
-  avatar: string;
+  @Prop()
+  avatar?: string;
   @Prop({
-    default: 'user',
+    default: ['user'],
   })
   role: [];
   @Prop({
@@ -25,16 +27,14 @@ export class Users {
   })
   created_at: Date;
   @Prop({
-    default: '[]',
+    ref: 'Story',
   })
-  followstory: [];
-  @Prop({
-    default: '[]',
-  })
+  followstory: string[];
+  @Prop()
   rate: [];
   @Prop()
-  wall: string;
-  @Prop({default: 1})
+  wall?: string;
+  @Prop({ default: 1 })
   status: boolean;
 }
 

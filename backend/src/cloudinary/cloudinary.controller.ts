@@ -1,21 +1,31 @@
-import { Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
-import { CloudinaryService } from './cloudinary.service'
-;
+import {
+  Controller,
+  Post,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from '@nestjs/common';
+import { CloudinaryService } from './cloudinary.service';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('cloudinary')
 export class CloudinaryController {
   constructor(private readonly cloudinaryService: CloudinaryService) {}
-  @Post('image')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
-    return this.cloudinaryService.uploadFile(file);
+  @Post('images')
+  @UseInterceptors(FilesInterceptor('files', 15))
+  async uploadImage(@UploadedFiles() files: Express.Multer.File[]) {
+    const uploadResults = await Promise.all(
+      files.map((file) => this.cloudinaryService.uploadFile(file)),
+    );
+    return uploadResults;
   }
-  
   //upload multiple files
   // @Post('images')
-  // @UseInterceptors(FilesInterceptor('file[]', 5))
-  // uploadImages(@UploadedFiles() files: Express.Multer.File[]) {
-  //   //... handle multiple files
+  // @UseInterceptors(FilesInterceptor('files', 5))
+  // async uploadImages(@UploadedFiles() files: Express.Multer.File[]) {
+  //   const uploadResults = await Promise.all(
+  //     files.map(file => this.cloudinaryService.uploadFile(file))
+  //   );
+  // return this.cloudinaryService.uploadMultiFiles(files);
   // }
 }

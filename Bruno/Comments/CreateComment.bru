@@ -1,0 +1,17 @@
+meta {
+  name: CreateComment
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/comments/create/6728869f54f79cda6de23a
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "content":"Phim tuổi thuơ của tôi"
+  }
+}

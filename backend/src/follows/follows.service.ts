@@ -1,26 +1,26 @@
 import { Injectable } from '@nestjs/common';
-import { CreateFollowDto } from './dto/create-follow.dto';
-import { UpdateFollowDto } from './dto/update-follow.dto';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Users } from 'src/users/schemas/users.schema';
 
 @Injectable()
 export class FollowsService {
-  create(createFollowDto: CreateFollowDto) {
-    return 'This action adds a new follow';
+  constructor(
+    @InjectModel(Users.name) private readonly usersModel: Model<Users>,
+  ) {}
+  async followStory(userId, storyId) {
+    console.log(userId, storyId);
+    await this.usersModel.findByIdAndUpdate(
+      userId,
+      {
+        $addToSet: {
+          followstory: storyId,
+        },
+      },
+      { new: true },
+    );
   }
-
-  findAll() {
-    return `This action returns all follows`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} follow`;
-  }
-
-  update(id: number, updateFollowDto: UpdateFollowDto) {
-    return `This action updates a #${id} follow`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} follow`;
+  async findOneUser(userId: string) {
+    return await this.usersModel.findById(userId).exec();
   }
 }

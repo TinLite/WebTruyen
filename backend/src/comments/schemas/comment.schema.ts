@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { Users } from "src/users/schemas/users.schema";
 @Schema()
 export class Comment {
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Users' })
     author: Users[];
     @Prop()
     content: string;
@@ -13,10 +13,10 @@ export class Comment {
     created_at: Date;
     @Prop()
     updated_at: Date;
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] })
+    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }] })
     likes: Users[];
     @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' })
-    replyTo:Comment;
+    replyTo?:Comment;
     @Prop()
     hasReply?: boolean;
 }

@@ -20,8 +20,9 @@ export class StoryService {
     files?: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
+      const folder = process.env.CLOUDINARY_FOLDER;
       const uploadImages = await Promise.all(
-        files.map((file) => this.cloudinaryService.uploadFile(file)),
+        files.map((file) => this.cloudinaryService.uploadFile(file, folder)),
       );
       createStoryDto.coverImage = uploadImages;
     }
@@ -41,8 +42,9 @@ export class StoryService {
     files?: Express.Multer.File[],
   ) {
     if (files && files.length > 0) {
+      const folder = process.env.CLOUDINARY_FOLDER;
       const uploadImages = await Promise.all(
-        files.map((file) => this.cloudinaryService.uploadFile(file)),
+        files.map((file) => this.cloudinaryService.uploadFile(file, folder)),
       );
       UpdateStoryDto.coverImage = uploadImages;
     }

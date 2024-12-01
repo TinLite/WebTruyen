@@ -14,8 +14,9 @@ export class CloudinaryController {
   @Post('images')
   @UseInterceptors(FilesInterceptor('files', 15))
   async uploadImage(@UploadedFiles() files: Express.Multer.File[]) {
+    const folder = process.env.CLOUDINARY_FOLDER ;
     const uploadResults = await Promise.all(
-      files.map((file) => this.cloudinaryService.uploadFile(file)),
+      files.map((file) => this.cloudinaryService.uploadFile(file,folder)),
     );
     return uploadResults;
   }

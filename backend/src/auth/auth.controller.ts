@@ -47,4 +47,11 @@ export class AuthController {
     }
     return { message: 'Protected data', user: req.session.user };
   }
+  @Get('profile')
+  getProfile(@Request() req) {
+    if (!req.session.user) {
+      return { message: 'Unauthorized access' };
+    }
+    return { user: req.session.user };
+  }
 }

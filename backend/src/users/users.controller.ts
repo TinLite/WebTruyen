@@ -69,4 +69,13 @@ export class UsersController {
       await this.usersService.delete(id);
     }
   }
+
+  @Get('profile/:id/detail')
+  async findOne(@Param('id') id: string, @User() userSession) {
+    if (id == 'me') {
+      id = userSession.id;
+    }
+    // console.log(id);
+    return await this.usersService.findOne(id);
+  }
 }

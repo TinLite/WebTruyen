@@ -1,9 +1,15 @@
+import { createTheme, CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { UserProvider } from './context/user-context.tsx'
+import './index.css'
 import LayoutMain from './layout/layout-main.tsx'
-import { createTheme, StyledEngineProvider, ThemeProvider } from '@mui/material'
+import PageMain from './page/home.tsx'
+import PageLogin from './page/login.tsx'
+import { PageReader } from './page/page-reader.tsx'
+import PageRegister from './page/register.tsx'
+import { PageStoryDetail } from './page/story/story-detail.tsx'
 
 const rootElement = document.getElementById('root')!;
 
@@ -14,9 +20,25 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h1>Home</h1>
+        element: <PageMain />
+      },
+      {
+        path: '/truyen/:id',
+        element: <PageStoryDetail />,
+      },
+      {
+        path: '/read/:id',
+        element: <PageReader />
       }
-    ]
+    ],
+  },
+  {
+    path: '/login',
+    element: <PageLogin />
+  },
+  {
+    path: '/register',
+    element: <PageRegister />,
   }
 ]);
 
@@ -53,7 +75,10 @@ createRoot(rootElement).render(
   <StrictMode>
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme} defaultMode='dark'>
-        <RouterProvider router={router} />
+        <CssBaseline />
+        <UserProvider>
+          <RouterProvider router={router} />
+        </UserProvider>
       </ThemeProvider>
     </StyledEngineProvider>
   </StrictMode>,

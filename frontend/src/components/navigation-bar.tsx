@@ -1,18 +1,27 @@
-import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
-import HomeIcon from '@mui/icons-material/Home';
-import LoginIcon from '@mui/icons-material/Login';
 import BookIcon from '@mui/icons-material/Book';
+import HistoryIcon from '@mui/icons-material/History';
+import HomeIcon from '@mui/icons-material/Home';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import LoginIcon from '@mui/icons-material/Login';
+import SettingsIcon from '@mui/icons-material/Settings';
+import UploadIcon from '@mui/icons-material/Upload';
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export function NavigationBar() {
+    const navigate = useNavigate();
     return (
-        <List>
-            <ListItem disablePadding>
+        <List sx={{
+            flexGrow: 1,
+            display: 'flex',
+            flexDirection: 'column'
+        }}>
+            <ListItem disablePadding component={NavLink} to={"/"} className='text-inherit'>
                 <ListItemButton>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Trang chủ" />
+                    <ListItemText primary="Homepage" />
                 </ListItemButton>
             </ListItem>
             <Divider />
@@ -21,7 +30,15 @@ export function NavigationBar() {
                     <ListItemIcon>
                         <BookIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Đã lưu" />
+                    <ListItemText primary="Bookmark" />
+                </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <HistoryIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Reading history" />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -29,16 +46,33 @@ export function NavigationBar() {
                     <ListItemIcon>
                         <ImportContactsIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Duyệt truyện" />
+                    <ListItemText primary="Title list" />
                 </ListItemButton>
             </ListItem>
             <Divider />
             <ListItem disablePadding>
-                <ListItemButton>
+                <ListItemButton onClick={() => navigate("/login")}>
                     <ListItemIcon>
                         <LoginIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Đăng nhập" />
+                    <ListItemText primary="Login" />
+                </ListItemButton>
+            </ListItem>
+            <div className="grow"></div>
+            <ListItem disablePadding>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <UploadIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Upload" />
+                </ListItemButton>
+            </ListItem>
+            <ListItem disablePadding>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <SettingsIcon />
+                    </ListItemIcon>
+                    <ListItemText primary="Setting" />
                 </ListItemButton>
             </ListItem>
         </List>

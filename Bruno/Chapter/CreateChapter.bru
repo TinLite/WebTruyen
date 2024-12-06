@@ -5,7 +5,16 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://localhost:3000/api/chapter/create
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "StoryId":"6739ab971ab33060f09dca3a",
+    "Title":"Test con",
+    "Content":"truyện kể về ...",
+    "ChapterNumber":"1"
+  }
 }

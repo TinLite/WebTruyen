@@ -1,0 +1,17 @@
+meta {
+  name: UpdateChapter
+  type: http
+  seq: 2
+}
+
+patch {
+  url: http://localhost:3000/api/chapter/675122ed69a588694ddbbb81/update/story/6739ab971ab33060f09dca3a
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "ChapterNumber":"1"
+  }
+}

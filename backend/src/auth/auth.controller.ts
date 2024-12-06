@@ -9,14 +9,23 @@ import {
   UseGuards,
   Request,
   ForbiddenException,
+  UnauthorizedException,
+  NotFoundException,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import * as session from 'express-session';
 import { LocalAuthGuard } from './passport/local-auth.guard';
-
+import { User } from './user.decorator';
+import { UsersService } from 'src/users/users.service';
+import * as bcrypt from 'bcrypt';
+import { ChangePasswordDto } from './dto/changpass.dto';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -53,5 +62,25 @@ export class AuthController {
       return { message: 'Unauthorized access' };
     }
     return { user: req.session.user };
+  }
+  @Patch('changePassword')
+  async changpass(
+    @User() userSession,
+    @Body() changePasswordDto: ChangePasswordDto,
+  ) {
+    if (!userSession) {
+      throw new UnauthorizedException('User not Unauthorized');
+    }
+    const userId = userSession.id;
+    const user = await this.usersService.findOneByIdWithPassword(userId);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const { oldPass, newPass } = changePasswordDto;
+    const isMatch = await bcrypt.compare(oldPass, user.password);
+    if (!isMatch) {
+      throw new BadRequestException('OldPassword is not match');
+    }
+    return await this.authService.changPass(userId, oldPass, newPass);
   }
 }

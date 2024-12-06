@@ -59,4 +59,7 @@ export class StoryService {
   async findOne(id: string) {
     return await this.storyModel.findOne({ _id: id }).exec();
   }
+  async deleteStory(storyId) {
+    return await this.storyModel.findByIdAndDelete({_id:storyId}).exec();
+  }
 }

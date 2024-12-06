@@ -13,5 +13,6 @@ import { StoryModule } from 'src/story/story.module';
   ],
   controllers: [ChapterController],
   providers: [ChapterService],
+  exports:[ChapterService]
 })
 export class ChapterModule {}

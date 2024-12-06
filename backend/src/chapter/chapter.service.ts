@@ -4,6 +4,7 @@ import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Chapter } from './schemas/chapter.schema';
 import { Model } from 'mongoose';
+import { Story } from '../story/schemas/story.schema';
 
 @Injectable()
 export class ChapterService {
@@ -17,5 +18,24 @@ export class ChapterService {
     });
     // console.log(data);
     return data._id;
+  }
+  async findOne(chapterId) {
+    const data = await this.chapterModel.findOne({
+      _id: chapterId,
+    });
+    return data;
+  }
+  async updateChapter(chapterId, UpdateChapterDto: UpdateChapterDto) {
+    const data = await this.chapterModel.findByIdAndUpdate(
+      chapterId,
+      UpdateChapterDto,
+    );
+    return data._id;
+  }
+  async deleteChapter(chapterId) {
+    return await this.chapterModel.findByIdAndDelete(chapterId);
+  }
+  async deleteAllChapterByStoryId(storyId){
+    return await this.chapterModel.findByIdAndDelete(storyId);
   }
 }

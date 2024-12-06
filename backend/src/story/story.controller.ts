@@ -72,4 +72,5 @@ export class StoryController {
     }
     return this.storyService.updateStory(id, updateStoryDto, files.files);
   }
+  
 }

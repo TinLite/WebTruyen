@@ -24,7 +24,7 @@ export class Story {
   @Prop({
     default: Date.now,
   })
-  createdAt: Date;
+  createdAt: Date;  
 
   @Prop({
     default: Date.now,

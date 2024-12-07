@@ -34,5 +34,4 @@ export class RateController {
     const userId = userSession.id;
     return await this.rateService.createRate(userId, storyId, createRateDto);
   }
-  
 }

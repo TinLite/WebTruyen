@@ -10,6 +10,7 @@ import {
   BadRequestException,
   UseInterceptors,
   UploadedFiles,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -77,5 +78,14 @@ export class UsersController {
     }
     // console.log(id);
     return await this.usersService.findOne(id);
+  }
+
+  @Get('list')
+  async findAllUser(@User() userSession) {
+    // if (userSession.role != 'admin') {
+    //   throw new ForbiddenException('You are not admin');
+    // }
+    const data = await this.usersService.getAllUser();
+    return data;
   }
 }

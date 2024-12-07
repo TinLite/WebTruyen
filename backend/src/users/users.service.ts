@@ -95,4 +95,7 @@ export class UsersService {
   async delete(id: string) {
     await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
   }
+  async getAllUser() {
+    return await this.usersModel.find({ status: true,role:{$ne:'admin'} }).exec();
+  }
 }

@@ -6,10 +6,11 @@ import LoginIcon from '@mui/icons-material/Login';
 import SettingsIcon from '@mui/icons-material/Settings';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 export function NavigationBar() {
     const navigate = useNavigate();
+    const {pathname: currentPath} = useLocation();
     return (
         <List sx={{
             flexGrow: 1,
@@ -17,7 +18,7 @@ export function NavigationBar() {
             flexDirection: 'column'
         }}>
             <ListItem disablePadding component={NavLink} to={"/"} className='text-inherit'>
-                <ListItemButton>
+                <ListItemButton selected>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>

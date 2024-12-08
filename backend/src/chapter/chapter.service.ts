@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Patch } from '@nestjs/common';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -35,7 +35,18 @@ export class ChapterService {
   async deleteChapter(chapterId) {
     return await this.chapterModel.findByIdAndDelete(chapterId);
   }
-  async deleteAllChapterByStoryId(storyId){
+  async deleteAllChapterByStoryId(storyId) {
     return await this.chapterModel.findByIdAndDelete(storyId);
+  }
+  async findAllChapterByStoryId(storyId:string) {
+    const data = await this.chapterModel
+      .find({ StoryId: storyId })
+      .populate({
+        path: 'StoryId',
+        select: 'status',
+      })
+      .exec();
+      const result = data.filter(chapter => chapter.StoryId && chapter.StoryId.status === true);
+    return result;
   }
 }

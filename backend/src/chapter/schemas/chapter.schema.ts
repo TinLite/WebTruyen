@@ -20,7 +20,7 @@ export class Chapter {
   @Prop()
   Content: String;
   @Prop()
-  ChapterNumber: string;
+  ChapterNumber: number;
   @Prop({
     type: Date.now,
   })

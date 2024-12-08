@@ -1,5 +1,5 @@
 export async function listUser() {
-    return fetch(`${process.env.VITE_API_URL}/users/list`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/api/users/list`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -9,6 +9,7 @@ import {
   NotFoundException,
   ForbiddenException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -17,6 +18,8 @@ import { User } from 'src/auth/user.decorator';
 import { StoryService } from 'src/story/story.service';
 import { UsersService } from 'src/users/users.service';
 import mongoose, { mongo } from 'mongoose';
+import { ChapterService } from '../chapter/chapter.service';
+import * as session from 'express-session';
 
 @Controller('comments')
 export class CommentsController {
@@ -24,12 +27,14 @@ export class CommentsController {
     private readonly commentsService: CommentsService,
     private readonly storyService: StoryService,
     private readonly usersService: UsersService,
+    private readonly ChapterService: ChapterService,
   ) {}
 
-  @Post('/create/:storyId')
+  @Post('/create/story/:storyId/chapter/:chapterId')
   async create(
     @Body() createCommentDto: CreateCommentDto,
     @Param('storyId') storyId: string,
+    @Param('chapterId') chapterId: string,
     @User() userSession,
   ) {
     if (!mongoose.Types.ObjectId.isValid(storyId)) {
@@ -41,12 +46,13 @@ export class CommentsController {
       throw new NotFoundException('Post not found');
     }
     if (!userSession) {
-      throw new ForbiddenException('User not authenticated');
+      throw new UnauthorizedException('User not authenticated');
     }
     const authorId = userSession.id;
     return await this.commentsService.create(
       authorId,
       storyId,
+      chapterId,
       createCommentDto,
     );
   }
@@ -85,7 +91,7 @@ export class CommentsController {
       throw new BadRequestException('Invalid comment ID');
     }
     const comment = await this.commentsService.findOne(commentId);
-    const post = await this.storyService.findOne(comment.storyId);
+    const post = await this.storyService.findOne(comment.storyId.toString());
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
@@ -122,6 +128,7 @@ export class CommentsController {
     return await this.commentsService.reply(
       userSession.id,
       comment.storyId,
+      comment.chapterId,
       commentId,
       replyToCommentDto,
     );
@@ -140,7 +147,10 @@ export class CommentsController {
   }
 
   @Post('/like/:commentId')
-  async likeComment(@Param('commentId') commentId: string, @User() userSession) {
+  async likeComment(
+    @Param('commentId') commentId: string,
+    @User() userSession,
+  ) {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       throw new BadRequestException('Invalid comment ID');
     }
@@ -148,7 +158,7 @@ export class CommentsController {
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
-    if(comment.likes.includes(userSession.id)){
+    if (comment.likes.includes(userSession.id)) {
       throw new BadRequestException('User already liked this comment');
     }
     if (!userSession) {
@@ -158,7 +168,10 @@ export class CommentsController {
   }
 
   @Delete('/unlike/:commentId')
-  async unlikeComment(@Param('commentId') commentId: string, @User() userSession) {
+  async unlikeComment(
+    @Param('commentId') commentId: string,
+    @User() userSession,
+  ) {
     if (!mongoose.Types.ObjectId.isValid(commentId)) {
       throw new BadRequestException('Invalid comment ID');
     }
@@ -166,7 +179,7 @@ export class CommentsController {
     if (!comment) {
       throw new NotFoundException('Comment not found');
     }
-    if(!comment.likes.includes(userSession.id)){
+    if (!comment.likes.includes(userSession.id)) {
       throw new BadRequestException('User has not liked this comment');
     }
     if (!userSession) {
@@ -174,5 +187,48 @@ export class CommentsController {
     }
     return await this.commentsService.unlikeComment(commentId, userSession.id);
   }
-  
+  @Get('/list/story/:storyId/chapter/:chapterId')
+  async getCommentByChapterId(
+    @Param('storyId') storyId: string,
+    @Param('chapterId') chapterId: string,
+    @User() userSession,
+  ) {
+    if (!mongoose.Types.ObjectId.isValid(storyId)) {
+      throw new BadRequestException('Invalid story ID');
+    }
+    if (!mongoose.Types.ObjectId.isValid(chapterId)) {
+      throw new BadRequestException('Invalid chapter ID');
+    }
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    // console.log(userSession.role);
+    if (!userSession.role.includes('admin')) {
+      throw new ForbiddenException('User not authorized to view this comment');
+    }
+    const post = await this.storyService.findOne(storyId);
+    if (!post) {
+      throw new NotFoundException('Post not found');
+    }
+    const chapter = await this.ChapterService.findOne(chapterId);
+    if (!chapter) {
+      throw new NotFoundException('Chapter not found');
+    }
+    return await this.commentsService.getCommentByChapterId(storyId, chapterId);
+  }
+  @Get('/listall')
+  async getComment() {
+    return await this.commentsService.getAllComment();
+  }
+  @Get('count')
+  async countComment() {
+    const users = await this.usersService.countUser();
+    const stories = await this.storyService.countStory();
+    const comment = await this.commentsService.countComment();
+    return {
+      users: users,
+      stories: stories,
+      comment: comment,
+    };
+  }
 }

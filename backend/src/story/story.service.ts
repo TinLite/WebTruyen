@@ -60,6 +60,18 @@ export class StoryService {
     return await this.storyModel.findOne({ _id: id }).exec();
   }
   async deleteStory(storyId) {
-    return await this.storyModel.findByIdAndDelete({_id:storyId}).exec();
+    return await this.storyModel
+      .updateOne({ _id: storyId }, { status: false })
+      .exec();
+  }
+  async findAll() {
+    return await this.storyModel
+      .find({ status: true })
+      .populate('authorId', 'displayname')
+      .exec();
+  }
+  async countStory() {
+    const data = await this.storyModel.find({ status: true }).exec();
+    return data.length;
   }
 }

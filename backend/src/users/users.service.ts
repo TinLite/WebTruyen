@@ -96,6 +96,22 @@ export class UsersService {
     await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
   }
   async getAllUser() {
-    return await this.usersModel.find({ status: true,role:{$ne:'admin'} }).exec();
+    return await this.usersModel
+      .find({ status: true, role: { $ne: 'admin' } })
+      .select('+email')
+      .exec();
+  }
+  async lockUser(id: string) {
+    return await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
+  }
+  async unlockUser(id: string) {
+    return await this.usersModel.updateOne({ _id: id }, { status: 1 }).exec();
+  }
+  async deleteUser(id: string) {
+    return await this.usersModel.deleteOne({ _id: id }).exec();
+  }
+  async countUser() {
+    const data = await this.usersModel.find({ status: true }).exec();
+    return data.length;
   }
 }

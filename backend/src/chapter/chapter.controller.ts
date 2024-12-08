@@ -9,6 +9,7 @@ import {
   NotFoundException,
   BadRequestException,
   ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { ChapterService } from './chapter.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
@@ -30,7 +31,7 @@ export class ChapterController {
     @User() userSession,
   ) {
     if (!userSession) {
-      throw new Error('User not authenticated');
+      throw new UnauthorizedException('User not authenticated');
     }
     const story = await this.storyService.findOne(
       createChapterDto.StoryId.toString(),
@@ -108,5 +109,11 @@ export class ChapterController {
       );
     }
     return await this.chapterService.deleteChapter(chapterId);
+  }
+  @Get('list/:storyId')
+  async findAllChapter(@User() userSession, @Param('storyId') storyId) {
+    const data=  await this.chapterService.findAllChapterByStoryId(storyId);
+    console.log(data);
+    return data;
   }
 }

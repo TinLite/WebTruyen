@@ -13,21 +13,24 @@ import LockPersonIcon from "@mui/icons-material/LockPerson";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
 import { User } from "../../../types/user-type";
 import { listUser } from "../../../repositories/user-repository";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { story } from "@/types/story-type";
+import { listStory } from "../../../repositories/story-repository";
 
-export default function ListUser() {
-  const [users, setUsers] = React.useState<User[]>([]);
-  const fetchUsers = async () => {
-    return listUser()
-      .then((res) => {
-        setUsers(res.data);
+export default function ListStory() {
+  const [Stories, setStories] = useState<story[]>([]);
+  const fetchStory = async () => {
+    listStory()
+      .then((data) => {
+        console.log(data);
+        setStories(data);
       })
       .catch((err) => {
         console.log(err);
       });
   };
   useEffect(() => {
-    fetchUsers();
+    fetchStory();
   }, []);
   return (
     <TableContainer component={Paper}>
@@ -35,30 +38,30 @@ export default function ListUser() {
         <TableHead>
           <TableRow>
             <TableCell>Avatar</TableCell>
-            <TableCell align="right">Username</TableCell>
-            <TableCell align="right">Displayname</TableCell>
-            <TableCell align="right">Email</TableCell>
+            <TableCell align="right">Name</TableCell>
+            <TableCell align="right">Genre</TableCell>
+            <TableCell align="right">Author</TableCell>
             <TableCell align="right" className="">
               Action
             </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.map((row) => (
+          {Stories.map((s) => (
             <TableRow
-              //   key={row.name}
+              key={s._id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
                 <Avatar
-                  alt="Remy Sharp"
-                  src="https://github.com/QuangTeoo.png"
+                  alt={s.title.charAt(0)}
+                  src={s.coverImage}
                   sx={{ width: 34, height: 34 }}
                 />
               </TableCell>
-              <TableCell align="right">1</TableCell>
-              <TableCell align="right">2</TableCell>
-              <TableCell align="right">3</TableCell>
+              <TableCell align="right">{s.title}</TableCell>
+              <TableCell align="right">{s.genre}</TableCell>
+              <TableCell align="right">{s.authorId.displayname}</TableCell>
               <TableCell align="right">
                 <Button
                   variant="outlined"

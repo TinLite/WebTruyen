@@ -15,10 +15,11 @@ import PageLogin from "./page/login.tsx";
 import { PageReader } from "./page/page-reader.tsx";
 import PageRegister from "./page/register.tsx";
 import { PageStoryDetail } from "./page/story/story-detail.tsx";
-import ListUser from "./page/Admin/user/list.tsx";
+import ListUser from "./page/Admin/user/list-user.tsx";
 import LayoutAdmin from "./layout/layout-admin.tsx";
-import ListComment from "./page/Admin/comment/list.tsx";
+import ListComment from "./page/Admin/comment/list-comment.tsx";
 import Statistical from "./page/Admin/component/statistical.tsx";
+import ListStory from "./page/Admin/story/list-story.tsx";
 
 const rootElement = document.getElementById("root")!;
 
@@ -59,16 +60,16 @@ const router = createBrowserRouter([
       },
       {
         path: "story",
-        element: <h1>Đây là quản lý story</h1>,
+        element: <ListStory />,
       },
       {
         path: "comment",
         element: <ListComment />,
       },
       {
-        path:"statistical",
-        element:<Statistical />
-      }
+        path: "statistical",
+        element: <Statistical />,
+      },
     ],
   },
 ]);

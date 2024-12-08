@@ -7,6 +7,8 @@ import { Model } from 'mongoose';
 import { UtilsService } from '../utils/utils.service';
 import e from 'express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { UsersModule } from './users.module';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -37,11 +39,22 @@ export class UsersService {
   }
 
   //findOne User
-  async findOne(id: string){
+  async findOne(id: string) {
     // return await this.usersModel.findById(id).select('+email').exec();
     return await this.usersModel.findOne({ _id: id, status: true }).exec();
   }
 
+  async findOneByIdWithPassword(userId) {
+    return await this.usersModel
+      .findOne({ _id: userId })
+      .select('+password')
+      .exec();
+  }
+  async upadatePass(userId, newPass: string) {
+    return await this.usersModel
+      .updateOne({ _id: userId }, { password: newPass })
+      .exec();
+  }
   async findByEmailWithPassword(email: string) {
     return await this.usersModel.findOne({ email }).select('+password').exec();
   }
@@ -58,22 +71,47 @@ export class UsersService {
     if (files) {
       if (files.avatar) {
         const folder = process.env.CLOUDINARY_FOLDER;
-        const avtImg = await this.cloudinaryService.uploadFile(files.avatar, folder);
+        const avtImg = await this.cloudinaryService.uploadFile(
+          files.avatar,
+          folder,
+        );
         updateUserDto.avatar = avtImg;
       }
       if (files.wall) {
         const folder = process.env.CLOUDINARY_FOLDER;
-        const wallImg = await this.cloudinaryService.uploadFile(files.wall,folder);
+        const wallImg = await this.cloudinaryService.uploadFile(
+          files.wall,
+          folder,
+        );
         updateUserDto.wall = wallImg;
       }
     }
-     const updateUser = await this.usersModel
-        .updateOne({ _id: id }, updateUserDto)
-        .exec();
-      return updateUser;
+    const updateUser = await this.usersModel
+      .updateOne({ _id: id }, updateUserDto)
+      .exec();
+    return updateUser;
   }
   //delete User
   async delete(id: string) {
     await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
+  }
+  async getAllUser() {
+    return await this.usersModel
+      .find({ status: true, role: { $ne: 'admin' } })
+      .select('+email')
+      .exec();
+  }
+  async lockUser(id: string) {
+    return await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
+  }
+  async unlockUser(id: string) {
+    return await this.usersModel.updateOne({ _id: id }, { status: 1 }).exec();
+  }
+  async deleteUser(id: string) {
+    return await this.usersModel.deleteOne({ _id: id }).exec();
+  }
+  async countUser() {
+    const data = await this.usersModel.find({ status: true }).exec();
+    return data.length;
   }
 }

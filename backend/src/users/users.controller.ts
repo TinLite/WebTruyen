@@ -10,6 +10,8 @@ import {
   BadRequestException,
   UseInterceptors,
   UploadedFiles,
+  ForbiddenException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -77,5 +79,37 @@ export class UsersController {
     }
     // console.log(id);
     return await this.usersService.findOne(id);
+  }
+
+  @Get('list')
+  async findAllUser(@User() userSession) {
+    // if(!userSession){
+    //   throw new UnauthorizedException('You are not login');
+    // }
+    // if (userSession.role != 'admin') {
+    //   throw new ForbiddenException('You are not admin');
+    // }
+    const data = await this.usersService.getAllUser();
+    return data;
+  }
+  @Patch('lock/:id')
+  async lockUser(@Param('id') id: string, @User() userSession) {
+    // if(!userSession){
+    //   throw new UnauthorizedException('You are not login');
+    // }
+    // if (userSession.role != 'admin') {
+    //   throw new ForbiddenException('You are not admin');
+    // }
+    return await this.usersService.lockUser(id);
+  }
+  @Patch('unlock/:id')
+  async unlockUser(@Param('id') id: string, @User() userSession) {
+    // if(!userSession){
+    //   throw new UnauthorizedException('You are not login');
+    // }
+    // if (userSession.role != 'admin') {
+    //   throw new ForbiddenException('You are not admin');
+    // }
+    return await this.usersService.unlockUser(id);
   }
 }

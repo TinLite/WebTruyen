@@ -14,13 +14,14 @@ export class Story {
   genre: string;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId, ref: 'Users'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
   })
   authorId: Users;
 
   @Prop()
-  coverImage?: string[];
-  
+  coverImage?: string;
+
   @Prop({
     default: Date.now,
   })

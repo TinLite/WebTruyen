@@ -1,1 +1,6 @@
-export class CreateHistoryDto {}
+import { IsNotEmpty } from "class-validator";
+import { Schema } from 'mongoose';
+
+export class CreateHistoryDto {
+  
+}

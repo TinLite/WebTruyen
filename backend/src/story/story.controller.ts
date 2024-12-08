@@ -11,6 +11,9 @@ import {
   Type,
   UploadedFiles,
   UploadedFile,
+  NotAcceptableException,
+  UnauthorizedException,
+  ForbiddenException,
 } from '@nestjs/common';
 import { StoryService } from './story.service';
 import { CreateStoryDto } from './dto/create-story.dto';
@@ -35,7 +38,7 @@ export class StoryController {
   create(
     @Body() createStoryDto: CreateStoryDto,
     @User() userSession,
-    @UploadedFiles() files:{ files:Express.Multer.File[]},
+    @UploadedFiles() files: { files: Express.Multer.File[] },
   ) {
     if (!userSession) {
       throw new Error('User not authenticated');
@@ -56,7 +59,7 @@ export class StoryController {
   async updateStory(
     @Param('id') id: string,
     @Body() updateStoryDto: UpdateStoryDto,
-    @UploadedFiles() files: {files: Express.Multer.File[]},
+    @UploadedFiles() files: { files: Express.Multer.File[] },
     @User() userSession,
   ) {
     if (!userSession) {
@@ -71,5 +74,30 @@ export class StoryController {
       throw new Error('You are not the author of this story');
     }
     return this.storyService.updateStory(id, updateStoryDto, files.files);
+  }
+  @Patch('delete/:id')
+  async deleteStory(@Param('id') id: string, @User() userSession) {
+    // if (!userSession) {
+    //   throw new Error('User not authenticated');
+    // }
+    const story = await this.storyService.findOne(id);
+    if (!story) {
+      throw new NotAcceptableException('Story not found');
+    }
+    // console.log(userSession.role)
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    if (
+      story.authorId.toString() !== userSession.id &&
+      !userSession.role.includes('admin')
+    ) {
+      throw new ForbiddenException('You are not the author of this story');
+    }
+    return this.storyService.deleteStory(id);
+  }
+  @Get('list')
+  async listStory() {
+    return this.storyService.findAll();
   }
 }

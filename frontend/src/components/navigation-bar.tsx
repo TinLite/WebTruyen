@@ -61,7 +61,7 @@ export function NavigationBar() {
             </ListItem>
             <div className="grow"></div>
             <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate("studio/new")}>
+                <ListItemButton onClick={() => navigate("/studio")}>
                     <ListItemIcon>
                         <UploadIcon />
                     </ListItemIcon>

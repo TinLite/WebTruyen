@@ -2,29 +2,31 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 
+export function StoryListItem() {
+    const navigate = useNavigate();
+    return (
+        <Card className="shrink-0" sx={{
+            width: 160,
+        }}>
+            <CardActionArea onClick={() => navigate('/truyen/1')}>
+                <CardMedia
+                    component='img'
+                    image='https://cataas.com/cat?width=160&height=120'
+                    alt='random image'
+                    height='120'
+                    width='160'
+                />
+                <CardContent>
+                    <Typography variant='h6'>Title</Typography>
+                    <Typography variant='body2' sx={{ color: 'text.secondary' }}>Latest chapter</Typography>
+                </CardContent>
+            </CardActionArea>
+        </Card>
+    )
+};
+
 export function ListCardHorizontal() {
-    function ListItem() {
-        const navigate = useNavigate();
-        return (
-            <Card className="shrink-0" sx={{
-                width: 160,
-            }}>
-                <CardActionArea onClick={() => navigate('/truyen/1')}>
-                    <CardMedia
-                        component='img'
-                        image='https://cataas.com/cat?width=160&height=120'
-                        alt='random image'
-                        height='120'
-                        width='160'
-                    />
-                    <CardContent>
-                        <Typography variant='h6'>Title</Typography>
-                        <Typography variant='body2' sx={{ color: 'text.secondary' }}>Latest chapter</Typography>
-                    </CardContent>
-                </CardActionArea>
-            </Card>
-        )
-    }
+
     return (
         <div>
             <Link to={'/'} style={{
@@ -42,18 +44,18 @@ export function ListCardHorizontal() {
                 scrollbarWidth: 'thin',
             }}>
                 <div className="flex gap-4 px-4 pb-4">
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
-                    <ListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
+                    <StoryListItem />
                     <Card className="shrink-0" sx={{
                         width: 160,
                         display: 'grid'

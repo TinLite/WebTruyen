@@ -1,5 +1,6 @@
-import { useEffect, createContext, useState } from "react";
+import { getProfile } from "@/repositories/user-repository";
 import { User } from "@/types/user-type";
+import { createContext, useEffect, useState } from "react";
 
 export const UserContext = createContext<{
     user: User | null,
@@ -12,11 +13,8 @@ export const UserContext = createContext<{
 export const UserProvider = ({ children, userData }: { children: React.ReactNode, userData?: User }) => {
     const [user, setUser] = useState<User | null>(userData ?? null);
     useEffect(() => {
-        // getProfile().then(setUser).catch(() => {
-        //     localStorage.removeItem("backend_access_token")
-        // })
+        getProfile().then(setUser).catch(console.error);
     }, []);
-    console.log("UserProvider", user)
     return (
         
         <UserContext.Provider value={{ user, setUser }}>

@@ -9,17 +9,18 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { UserProvider } from "./context/user-context.tsx";
 import "./index.css";
+import LayoutAdmin from "./layout/layout-admin.tsx";
 import LayoutMain from "./layout/layout-main.tsx";
+import ListComment from "./page/Admin/comment/list-comment.tsx";
+import Statistical from "./page/Admin/component/statistical.tsx";
+import ListStory from "./page/Admin/story/list-story.tsx";
+import ListUser from "./page/Admin/user/list-user.tsx";
 import PageMain from "./page/home.tsx";
 import PageLogin from "./page/login.tsx";
 import { PageReader } from "./page/page-reader.tsx";
 import PageRegister from "./page/register.tsx";
 import { PageStoryDetail } from "./page/story/story-detail.tsx";
-import ListUser from "./page/Admin/user/list-user.tsx";
-import LayoutAdmin from "./layout/layout-admin.tsx";
-import ListComment from "./page/Admin/comment/list-comment.tsx";
-import Statistical from "./page/Admin/component/statistical.tsx";
-import ListStory from "./page/Admin/story/list-story.tsx";
+import { PageStudioStorySelector } from './page/studio/story/story-selector.tsx';
 
 const rootElement = document.getElementById("root")!;
 
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <PageRegister />,
+  },
+  {
+    path: '/studio',
+    element: <PageStudioStorySelector />
   },
   {
     path: "/admin",

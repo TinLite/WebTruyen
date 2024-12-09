@@ -1,4 +1,5 @@
-import { Container, CssBaseline, Typography } from "@mui/material";
+import { Card, CardActionArea, CardContent, CardMedia, Container, CssBaseline, Typography } from "@mui/material";
+import { Link } from "react-router-dom";
 import { StoryListItem } from "../../../components/list";
 
 export function PageStudioStorySelector() {
@@ -10,36 +11,25 @@ export function PageStudioStorySelector() {
         </div>
         <Container>
             <div className="flex gap-6 flex-wrap">
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
-                <StoryListItem />
+                <Card>
+                    {/* @ts-expect-error */}
+                    <CardActionArea LinkComponent={Link} to="new" sx={{
+                        height: "100%"
+                    }}>
+                        <div className="h-full">
+                            <CardMedia
+                                component='img'
+                                image='/unseen-studio-s9CC2SKySJM-unsplash.jpg'
+                                alt='random image'
+                                height='120'
+                                width='160'
+                            />
+                            <CardContent>
+                                Create new story...
+                            </CardContent>
+                        </div>
+                    </CardActionArea>
+                </Card>
                 <StoryListItem />
             </div>
         </Container>

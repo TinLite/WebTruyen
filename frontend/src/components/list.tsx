@@ -1,14 +1,14 @@
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export function StoryListItem() {
-    const navigate = useNavigate();
     return (
         <Card className="shrink-0" sx={{
             width: 160,
         }}>
-            <CardActionArea onClick={() => navigate('/truyen/1')}>
+            {/* @ts-expect-error */}
+            <CardActionArea LinkComponent={Link} to='/truyen/1'>
                 <CardMedia
                     component='img'
                     image='https://cataas.com/cat?width=160&height=120'

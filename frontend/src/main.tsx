@@ -20,6 +20,7 @@ import PageLogin from "./page/login.tsx";
 import { PageReader } from "./page/page-reader.tsx";
 import PageRegister from "./page/register.tsx";
 import { PageStoryDetail } from "./page/story/story-detail.tsx";
+import { PageStudioStoryNew } from "./page/studio/story/story-new.tsx";
 import { PageStudioStorySelector } from './page/studio/story/story-selector.tsx';
 
 const rootElement = document.getElementById("root")!;
@@ -53,7 +54,16 @@ const router = createBrowserRouter([
   },
   {
     path: '/studio',
-    element: <PageStudioStorySelector />
+    children: [
+      {
+        index: true,
+        element: <PageStudioStorySelector />,
+      },
+      {
+        path: 'new',
+        element: <PageStudioStoryNew />
+      }
+    ]
   },
   {
     path: "/admin",

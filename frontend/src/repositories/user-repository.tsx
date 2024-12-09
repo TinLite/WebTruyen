@@ -5,7 +5,10 @@ export async function listUser() {
             'Content-Type': 'application/json',
         },
         credentials: 'include',
-    }).then((res) => res.json());
+    }).then((res) => {
+        if (res.ok)
+            return res.json()
+    });
 }
 
 export async function getProfile(id: string = "me") {
@@ -15,5 +18,8 @@ export async function getProfile(id: string = "me") {
             'Content-Type': 'application/json',
         },
         credentials: "include"
-    }).then((res) => res.json());
+    }).then((res) => {
+        if (res.ok)
+            return res.json()
+    });
 }

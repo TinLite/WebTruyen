@@ -5,5 +5,8 @@ export async function listStory() {
       "Content-Type": "application/json",
     },
     credentials: "include",
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (res.ok)
+      return res.json()
+  });
 }

@@ -1,27 +1,24 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  NotFoundException,
   BadRequestException,
-  UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
   UploadedFiles,
-  ForbiddenException,
-  UnauthorizedException,
+  UseInterceptors
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import {
+  FileFieldsInterceptor
+} from '@nestjs/platform-express';
+import mongoose from 'mongoose';
+import { User } from 'src/auth/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import mongoose from 'mongoose';
-import {
-  FileFieldsInterceptor,
-  FilesInterceptor,
-} from '@nestjs/platform-express';
-import { User } from 'src/auth/user.decorator';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
@@ -75,6 +72,7 @@ export class UsersController {
   @Get('profile/:id/detail')
   async findOne(@Param('id') id: string, @User() userSession) {
     if (id == 'me') {
+      console.log(userSession);
       id = userSession.id;
     }
     // console.log(id);

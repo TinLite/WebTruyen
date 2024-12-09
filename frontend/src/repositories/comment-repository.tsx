@@ -5,7 +5,10 @@ export async function listComment() {
       "Content-Type": "application/json",
     },
     credentials: "include",
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (res.ok)
+      return res.json()
+  });
 }
 export async function listCount() {
   return fetch(`${import.meta.env.VITE_API_URL}/api/comments/count`, {
@@ -14,5 +17,8 @@ export async function listCount() {
       "Content-Type": "application/json",
     },
     credentials: "include",
-  }).then((res) => res.json());
+  }).then((res) => {
+    if (res.ok)
+      return res.json()
+  });
 }

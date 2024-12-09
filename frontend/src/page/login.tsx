@@ -21,6 +21,7 @@ export default function PageLogin() {
     }
 
     useEffect(() => {
+        console.log(user);
         if (user)
             navigate("/");
     }, [])

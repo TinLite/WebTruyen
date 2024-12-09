@@ -1,7 +1,29 @@
-import { Button, CssBaseline, TextField, Typography, Link } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import { UserContext } from "@/context/user-context";
+import { Button, Link, TextField, Typography } from "@mui/material";
+import { useContext, useEffect } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function PageRegister() {
+
+    const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
+    var formData = {
+        email: "",
+        password: "",
+    };
+
+    function formSubmitEvent(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        // login(formData.email, formData.password).then(() => {
+        //     getProfile().then(setUser)
+        // })
+    }
+
+    useEffect(() => {
+        console.log(user);
+        if (user)
+            navigate("/");
+    }, [])
     
     return (
         <>
@@ -9,7 +31,7 @@ export default function PageRegister() {
                 <div className="grid place-items-center w-full bg-[#001731AB]">
                     <div className="bg-[#001731] px-12 rounded-3xl py-6 w-full max-w-md">
                         <Typography variant="h5" className="text-center">Đăng ký</Typography>
-                        <form className="py-6 grid gap-2">
+                        <form onSubmit={formSubmitEvent} className="py-6 grid gap-2">
                             <TextField
                                 label="Tên của bạn"
                                 size="small"

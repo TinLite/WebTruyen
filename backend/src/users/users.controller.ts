@@ -8,6 +8,7 @@ import {
   Param,
   Patch,
   Post,
+  UnauthorizedException,
   UploadedFiles,
   UseInterceptors
 } from '@nestjs/common';
@@ -72,7 +73,9 @@ export class UsersController {
   @Get('profile/:id/detail')
   async findOne(@Param('id') id: string, @User() userSession) {
     if (id == 'me') {
-      console.log(userSession);
+      if (!userSession) {
+        throw new UnauthorizedException();
+      }
       id = userSession.id;
     }
     // console.log(id);

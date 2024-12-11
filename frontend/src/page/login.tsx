@@ -38,7 +38,7 @@ export default function PageLogin() {
             else
                 navigate("/")
         }
-    }, [])
+    }, [user])
 
     return (
         <>

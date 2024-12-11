@@ -6,10 +6,7 @@ export async function login(email: string, password: string) {
         },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
-    }).then((res) => {
-        if (res.ok)
-            return res.json()
-    });
+    })
 }
 
 export async function register(name: string, email: string, sdt: string, password: string) {
@@ -20,8 +17,5 @@ export async function register(name: string, email: string, sdt: string, passwor
         },
         body: JSON.stringify({ name, email, sdt, password }),
         credentials: 'include',
-    }).then((res) => {
-        if (res.ok)
-            return res.json()
-    });
+    })
 }

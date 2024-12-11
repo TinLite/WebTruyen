@@ -6,6 +6,7 @@ export class User {
   avatar?: string;
   followstory: string[];
   create_at: Date;
+  role: string[];
   rate: [];
   wall?: string;
   constructor(
@@ -16,6 +17,7 @@ export class User {
     avatar: string,
     followstory: string[],
     create_at: Date,
+    role: string[],
     rate: [],
     wall: string
   ) {
@@ -26,6 +28,7 @@ export class User {
     this.avatar = avatar;
     this.followstory = followstory;
     this.create_at = create_at;
+    this.role = role;
     this.rate = rate;
     this.wall = wall;
   }

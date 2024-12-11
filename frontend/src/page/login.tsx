@@ -1,29 +1,43 @@
 import { UserContext } from "@/context/user-context";
 import { login } from "@/repositories/authentication-repository";
 import { getProfile } from "@/repositories/user-repository";
-import { Button, Link, TextField, Typography } from "@mui/material";
-import { useContext, useEffect } from "react";
+import { Button, Dialog, DialogActions, DialogContent, Link, TextField, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 
 export default function PageLogin() {
     const { user, setUser } = useContext(UserContext);
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState("");
     const navigate = useNavigate();
     var formData = {
         email: "",
         password: "",
     };
 
+    function openAlert(message: string) {
+        setAlertMessage(message);
+        setAlertOpen(true);
+    }
+
     function formSubmitEvent(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        login(formData.email, formData.password).then(() => {
-            getProfile().then(setUser)
+        login(formData.email, formData.password).then((res) => {
+            if (res.ok)
+                getProfile().then(setUser)
+            else {
+                openAlert("Sai tài khoản hoặc mật khẩu");
+            }
         })
     }
 
     useEffect(() => {
-        console.log(user);
-        if (user)
-            navigate("/");
+        if (user) {
+            if (user.role.includes("admin"))
+                navigate("/admin")
+            else
+                navigate("/")
+        }
     }, [])
 
     return (
@@ -32,6 +46,16 @@ export default function PageLogin() {
                 <div className="grid place-items-center w-full md:w-3/5 bg-[#001731AB]">
                     <div className="bg-[#001731] px-12 rounded-3xl py-6 w-full max-w-md">
                         <Typography variant="h5" className="text-center">Đăng nhập</Typography>
+                        <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
+                            <DialogContent>
+                                {alertMessage}
+                            </DialogContent>
+                            <DialogActions>
+                                <Button onClick={() => setAlertOpen(false)} autoFocus>
+                                    Confirm
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
                         <form onSubmit={formSubmitEvent} className="py-6 grid gap-2">
                             <TextField
                                 label="Email"

@@ -231,4 +231,15 @@ export class CommentsController {
       comment: comment,
     };
   }
+  @Delete('admin/delete/:commentId')
+  async deleteComment(@Param('commentId') commentId, @User() userSession) {
+    console.log(userSession.role);
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    if (!userSession.role.includes('admin')) {
+      throw new ForbiddenException('User not authorized to delete comment');
+    }
+    return await this.commentsService.removeComment(commentId);
+  }
 }

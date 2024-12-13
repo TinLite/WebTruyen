@@ -9,6 +9,7 @@ import e from 'express';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { UsersModule } from './users.module';
 import * as bcrypt from 'bcrypt';
+import { UpdateChapterDto } from '../chapter/dto/update-chapter.dto';
 
 @Injectable()
 export class UsersService {
@@ -113,5 +114,8 @@ export class UsersService {
   async countUser() {
     const data = await this.usersModel.find({ status: true }).exec();
     return data.length;
+  }
+  async updateUser(id, updateUserDto: UpdateUserDto) {
+    return await this.usersModel.updateOne({ _id: id }, updateUserDto).exec();
   }
 }

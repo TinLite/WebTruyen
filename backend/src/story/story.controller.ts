@@ -77,9 +77,9 @@ export class StoryController {
   }
   @Patch('delete/:id')
   async deleteStory(@Param('id') id: string, @User() userSession) {
-    // if (!userSession) {
-    //   throw new Error('User not authenticated');
-    // }
+    if (!userSession) {
+      throw new Error('User not authenticated');
+    }
     const story = await this.storyService.findOne(id);
     if (!story) {
       throw new NotAcceptableException('Story not found');
@@ -99,5 +99,19 @@ export class StoryController {
   @Get('list')
   async listStory() {
     return this.storyService.findAll();
+  }
+  @Post('admin/lock/:id')
+  async lockStory(@Param('id') id: string, @User() userSession) {
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    const story = await this.storyService.findOne(id);
+    if (!story) {
+      throw new NotAcceptableException('Story not found');
+    }
+    if (!userSession.role.includes('admin')) {
+      throw new ForbiddenException('You are not admin');
+    }
+    return this.storyService.lockStory(id);
   }
 }

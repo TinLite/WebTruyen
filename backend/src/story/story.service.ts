@@ -73,4 +73,7 @@ export class StoryService {
     const data = await this.storyModel.find({ status: true }).exec();
     return data.length;
   }
+  async lockStory(storyId: string) {
+    return await this.storyModel.updateOne({ _id: storyId }, { status: false });
+  }
 }

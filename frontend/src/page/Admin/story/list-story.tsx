@@ -6,19 +6,30 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LockIcon from "@mui/icons-material/Lock";
-import LockPersonIcon from "@mui/icons-material/LockPerson";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { User } from "../../../types/user-type";
-import { listUser } from "../../../repositories/user-repository";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
 import { story } from "@/types/story-type";
-import { listStory } from "../../../repositories/story-repository";
+import { adminLockStory, listStory } from "../../../repositories/story-repository";
 
 export default function ListStory() {
   const [Stories, setStories] = useState<story[]>([]);
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const fetchStory = async () => {
     listStory()
       .then((data) => {
@@ -29,9 +40,24 @@ export default function ListStory() {
         console.log(err);
       });
   };
+  const handleRemoveStory = async (id: string) => {
+    await adminLockStory(id)
+      .then(() => {
+        fetchStory();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   useEffect(() => {
     fetchStory();
   }, []);
+  const handleViewStory = async (id: string) => {
+    alert(
+      "Thằng Tèo nó chưa nhéc link vào xem chapter của truyện này bạn ơi :)))"
+    );
+  };
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -65,21 +91,43 @@ export default function ListStory() {
               <TableCell align="right">
                 <Button
                   variant="outlined"
-                  startIcon={<LockPersonIcon />}
+                  startIcon={<VisibilityIcon />}
                   className="mr-2"
                   size="small"
-                  color="warning"
-                >
-                  Lock
-                </Button>
+                  onClick={() => handleViewStory(s._id)}
+                ></Button>
                 <Button
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteIcon />}
                   size="small"
+                  onClick={handleClickOpen}
+                ></Button>
+                <Dialog
+                  open={open}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-describedby="alert-dialog-slide-description"
                 >
-                  Delete
-                </Button>
+                  <DialogTitle>{"DELETE STORY ?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      Do you want to delete this story ?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button
+                      onClick={() =>
+                        handleRemoveStory(s._id).then(() => {
+                          setOpen(false);
+                        })
+                      }
+                    >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </TableCell>
             </TableRow>
           ))}

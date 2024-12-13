@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { Comment } from './schemas/comment.schema';
 import * as passport from 'passport';
+import { CommentsModule } from './comments.module';
 @Injectable()
 export class CommentsService {
   constructor(
@@ -118,8 +119,11 @@ export class CommentsService {
       { new: true },
     );
   }
-  async countComment(){
+  async countComment() {
     const data = await this.commentsModel.find().exec();
     return data.length;
+  }
+  async removeComment(commentId) {
+    return await this.commentsModel.findByIdAndDelete(commentId).exec();
   }
 }

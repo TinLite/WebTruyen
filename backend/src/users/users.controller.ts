@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   NotFoundException,
   Param,
@@ -10,11 +11,9 @@ import {
   Post,
   UnauthorizedException,
   UploadedFiles,
-  UseInterceptors
+  UseInterceptors,
 } from '@nestjs/common';
-import {
-  FileFieldsInterceptor
-} from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import mongoose from 'mongoose';
 import { User } from 'src/auth/user.decorator';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -78,39 +77,53 @@ export class UsersController {
       }
       id = userSession.id;
     }
-    // console.log(id);
+    console.log(id);
     return await this.usersService.findOne(id);
   }
 
   @Get('list')
   async findAllUser(@User() userSession) {
-    // if(!userSession){
-    //   throw new UnauthorizedException('You are not login');
-    // }
-    // if (userSession.role != 'admin') {
-    //   throw new ForbiddenException('You are not admin');
-    // }
+    if (!userSession) {
+      throw new UnauthorizedException('You are not login');
+    }
+    if (userSession.role != 'admin') {
+      throw new ForbiddenException('You are not admin');
+    }
     const data = await this.usersService.getAllUser();
     return data;
   }
   @Patch('lock/:id')
   async lockUser(@Param('id') id: string, @User() userSession) {
-    // if(!userSession){
-    //   throw new UnauthorizedException('You are not login');
-    // }
-    // if (userSession.role != 'admin') {
-    //   throw new ForbiddenException('You are not admin');
-    // }
+    if (!userSession) {
+      throw new UnauthorizedException('You are not login');
+    }
+    if (userSession.role != 'admin') {
+      throw new ForbiddenException('You are not admin');
+    }
     return await this.usersService.lockUser(id);
   }
   @Patch('unlock/:id')
   async unlockUser(@Param('id') id: string, @User() userSession) {
-    // if(!userSession){
-    //   throw new UnauthorizedException('You are not login');
-    // }
-    // if (userSession.role != 'admin') {
-    //   throw new ForbiddenException('You are not admin');
-    // }
+    if (!userSession) {
+      throw new UnauthorizedException('You are not login');
+    }
+    if (userSession.role != 'admin') {
+      throw new ForbiddenException('You are not admin');
+    }
     return await this.usersService.unlockUser(id);
+  }
+  @Patch('admin/update/:id')
+  async adminUpdateUser(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+    @User() userSession,
+  ) {
+    if (!userSession) {
+      throw new UnauthorizedException('You are not login');
+    }
+    if (userSession.role != 'admin') {
+      throw new ForbiddenException('You are not admin');
+    }
+    return await this.usersService.updateUser(id, updateUserDto);
   }
 }

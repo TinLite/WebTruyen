@@ -6,19 +6,34 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Avatar, Button } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import LockIcon from "@mui/icons-material/Lock";
-import LockPersonIcon from "@mui/icons-material/LockPerson";
-import LockOpenIcon from "@mui/icons-material/LockOpen";
-import { User } from "../../../types/user-type";
-import { listUser } from "../../../repositories/user-repository";
-import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
 import { comment } from "@/types/comment-type";
-import { listComment } from "../../../repositories/comment-repository";
+import {
+  deleteComment,
+  listComment,
+} from "../../../repositories/comment-repository";
+import { useNavigate, useParams } from "react-router-dom";
 export default function ListComment() {
   const [comments, setcomments] = useState<comment[]>([]);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
   const fetchComment = async () => {
     listComment()
       .then((data) => {
@@ -32,6 +47,18 @@ export default function ListComment() {
   useEffect(() => {
     fetchComment();
   }, []);
+  const handleRemoveComment = async (id: string) => {
+    await deleteComment(id)
+      .then(() => {
+        fetchComment();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleViewComment = async (id: string) => {
+      alert("Thằng Tèo chưa nhéc đường link view bạn ơi :)))");
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -74,17 +101,40 @@ export default function ListComment() {
                   startIcon={<VisibilityIcon />}
                   className="mr-2"
                   size="small"
-                >
-                  Detail
-                </Button>
+                  onClick={() => handleViewComment(c._id)}
+                ></Button>
                 <Button
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteIcon />}
                   size="small"
+                  onClick={handleClickOpen}
+                ></Button>
+                <Dialog
+                  open={open}
+                  keepMounted
+                  onClose={handleClose}
+                  aria-describedby="alert-dialog-slide-description"
                 >
-                  Delete
-                </Button>
+                  <DialogTitle>{"DELETE COMMENT?"}</DialogTitle>
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-slide-description">
+                      Do you want to delete this comment?
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button
+                      onClick={() =>
+                        handleRemoveComment(c._id).then(() => {
+                          setOpen(false);
+                        })
+                      }
+                    >
+                      Ok
+                    </Button>
+                  </DialogActions>
+                </Dialog>
               </TableCell>
             </TableRow>
           ))}

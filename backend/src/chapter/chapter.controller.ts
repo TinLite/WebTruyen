@@ -42,6 +42,9 @@ export class ChapterController {
     if (story.authorId.toString() !== userSession.id) {
       throw new Error('You are not the author of this story');
     }
+    await this.storyService.updateTimeStamp(
+      createChapterDto.StoryId.toString(),
+    );
     return this.chapterService.createChapter(userSession.id, createChapterDto);
   }
   @Patch('/:chapterId/update/story/:storyId')
@@ -112,7 +115,7 @@ export class ChapterController {
   }
   @Get('list/:storyId')
   async findAllChapter(@User() userSession, @Param('storyId') storyId) {
-    const data=  await this.chapterService.findAllChapterByStoryId(storyId);
+    const data = await this.chapterService.findAllChapterByStoryId(storyId);
     console.log(data);
     return data;
   }

@@ -114,4 +114,16 @@ export class StoryController {
     }
     return this.storyService.lockStory(id);
   }
+  @Get('/newchapter/list')
+  async listStoryNewChapter() {
+    return await this.storyService.getStoriesWithNewestChapter();
+  }
+  @Get('/new/list')
+  async listNewStory() {
+    return await this.storyService.getStoriesNew();
+  }
+  @Get('/rating/list')
+  async listStoryRating() {
+    return await this.storyService.getStoriesWithMostRating();
+  }
 }

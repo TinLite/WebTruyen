@@ -76,4 +76,23 @@ export class StoryService {
   async lockStory(storyId: string) {
     return await this.storyModel.updateOne({ _id: storyId }, { status: false });
   }
+  async getStoriesWithNewestChapter() {
+    const stories = await this.storyModel.find({ status: true }).sort({updatedAt: -1}).populate('authorId','displayname').exec();
+    return stories;
+  }
+  async getStoriesNew(){
+    const stories = await this.storyModel.find({ status: true }).sort({createdAt: -1}).populate('authorId','displayname').exec();
+    return stories;
+  }
+  async updateTimeStamp(storyId: string) {
+    return await this.storyModel.updateOne(
+      { _id: storyId },
+      { updatedAt: new Date() },
+    );
+  }
+  async getStoriesWithMostRating() {
+    const stories = await this.storyModel.find({ status: true }).sort({rating: -1}).populate('authorId','displayname').exec();
+    return stories;
+  }
+  
 }

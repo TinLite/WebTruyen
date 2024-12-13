@@ -1,3 +1,6 @@
+import { UserContext } from '@/context/user-context';
+import { logout } from '@/repositories/authentication-repository';
+import { ArrowBack, FormatListNumbered, Logout } from '@mui/icons-material';
 import BookIcon from '@mui/icons-material/Book';
 import HistoryIcon from '@mui/icons-material/History';
 import HomeIcon from '@mui/icons-material/Home';
@@ -5,12 +8,21 @@ import ImportContactsIcon from '@mui/icons-material/ImportContacts';
 import LoginIcon from '@mui/icons-material/Login';
 import SettingsIcon from '@mui/icons-material/Settings';
 import UploadIcon from '@mui/icons-material/Upload';
-import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
+import { useContext } from 'react';
+import { NavLink, Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
 
 export function NavigationBar() {
+    const { user, setUser } = useContext(UserContext);
     const navigate = useNavigate();
-    const {pathname: currentPath} = useLocation();
+    const { pathname: currentPath } = useLocation();
+    function handleLogout() {
+        logout().then((r) => {
+            if (r.ok) {
+                setUser(null);
+            }
+        })
+    }
     return (
         <List sx={{
             flexGrow: 1,
@@ -51,17 +63,34 @@ export function NavigationBar() {
                 </ListItemButton>
             </ListItem>
             <Divider />
-            <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate("/login")}>
-                    <ListItemIcon>
-                        <LoginIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Login" />
-                </ListItemButton>
-            </ListItem>
+            {
+                user ?
+                    <>
+                        <ListSubheader>Logged in as {user.displayname ?? user.username}</ListSubheader>
+                        <ListItem disablePadding>
+                            <ListItemButton onClick={handleLogout}>
+                                <ListItemIcon>
+                                    <Logout />
+                                </ListItemIcon>
+                                <ListItemText primary="Logout" />
+                            </ListItemButton>
+                        </ListItem>
+                    </>
+                    :
+                    <ListItem disablePadding>
+                        {/* @ts-expect-error */}
+                        <ListItemButton LinkComponent={RouterLink} to="/login">
+                            <ListItemIcon>
+                                <LoginIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Login" />
+                        </ListItemButton>
+                    </ListItem>
+            }
             <div className="grow"></div>
             <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate("/studio")}>
+                {/* @ts-expect-error */}
+                <ListItemButton LinkComponent={RouterLink} to="/studio">
                     <ListItemIcon>
                         <UploadIcon />
                     </ListItemIcon>
@@ -88,55 +117,30 @@ export function CreatorStudioNavigationBar() {
             display: 'flex',
             flexDirection: 'column'
         }}>
-            <ListItem disablePadding component={NavLink} to={"/"} className='text-inherit'>
+            <ListItem disablePadding>
                 <ListItemButton selected>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Homepage" />
+                    <ListItemText primary="Basic information" />
                 </ListItemButton>
             </ListItem>
             <Divider />
             <ListItem disablePadding>
                 <ListItemButton>
                     <ListItemIcon>
-                        <BookIcon />
+                        <FormatListNumbered />
                     </ListItemIcon>
-                    <ListItemText primary="Bookmark" />
-                </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <HistoryIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Reading history" />
-                </ListItemButton>
-            </ListItem>
-            <ListItem disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
-                        <ImportContactsIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Title list" />
-                </ListItemButton>
-            </ListItem>
-            <Divider />
-            <ListItem disablePadding>
-                <ListItemButton onClick={() => navigate("/login")}>
-                    <ListItemIcon>
-                        <LoginIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Login" />
+                    <ListItemText primary="Chapters" />
                 </ListItemButton>
             </ListItem>
             <div className="grow"></div>
             <ListItem disablePadding>
                 <ListItemButton onClick={() => navigate("/studio")}>
                     <ListItemIcon>
-                        <UploadIcon />
+                        <ArrowBack />
                     </ListItemIcon>
-                    <ListItemText primary="Add new story" />
+                    <ListItemText primary="Back" />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>

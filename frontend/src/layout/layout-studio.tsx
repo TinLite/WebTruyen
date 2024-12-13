@@ -8,11 +8,11 @@ import * as React from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Autocomplete, Divider, InputAdornment, TextField, Typography } from '@mui/material';
-import { NavigationBar } from '../components/navigation-bar';
+import { CreatorStudioNavigationBar } from '../components/navigation-bar';
 
 const drawerWidth = 240;
 
-export default function MainLayout() {
+export default function StudioLayout() {
     const [mobileOpen, setMobileOpen] = React.useState(false);
     const [isClosing, setIsClosing] = React.useState(false);
 
@@ -35,11 +35,11 @@ export default function MainLayout() {
         <>
             <Toolbar>
                 <Typography variant="h6">
-                    NetTrộm
+                    NetTrộm Studio
                 </Typography>
             </Toolbar>
             <Divider />
-            <NavigationBar />
+            <CreatorStudioNavigationBar />
         </>
     )
 

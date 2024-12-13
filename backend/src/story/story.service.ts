@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import { UpdateStoryDto } from './dto/update-story.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Story } from './schemas/story.schema';
-import mongoose, { Model, mongo } from 'mongoose';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class StoryService {
@@ -19,12 +18,12 @@ export class StoryService {
     createStoryDto: CreateStoryDto,
     files?: Express.Multer.File[],
   ) {
-    if (files && files.length > 0) {
+    if (files && files.length == 1) {
       const folder = process.env.CLOUDINARY_FOLDER;
       const uploadImages = await Promise.all(
         files.map((file) => this.cloudinaryService.uploadFile(file, folder)),
       );
-      createStoryDto.coverImage = uploadImages;
+      createStoryDto.coverImage = uploadImages[0];
     }
     const data = await this.storyModel.create({
       ...createStoryDto,
@@ -41,12 +40,12 @@ export class StoryService {
     UpdateStoryDto: UpdateStoryDto,
     files?: Express.Multer.File[],
   ) {
-    if (files && files.length > 0) {
+    if (files && files.length == 1) {
       const folder = process.env.CLOUDINARY_FOLDER;
       const uploadImages = await Promise.all(
         files.map((file) => this.cloudinaryService.uploadFile(file, folder)),
       );
-      UpdateStoryDto.coverImage = uploadImages;
+      UpdateStoryDto.coverImage = uploadImages[0];
     }
     const data = await this.storyModel.updateOne(
       { _id: storyId },

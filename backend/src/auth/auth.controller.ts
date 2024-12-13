@@ -1,25 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-  Request,
-  ForbiddenException,
-  UnauthorizedException,
-  NotFoundException,
   BadRequestException,
+  Body,
+  Controller,
+  ForbiddenException,
+  Get,
+  NotFoundException,
+  Patch,
+  Post,
+  Request,
+  UnauthorizedException,
+  UseGuards
 } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
+import { UsersService } from 'src/users/users.service';
 import { AuthService } from './auth.service';
-import * as session from 'express-session';
+import { ChangePasswordDto } from './dto/changpass.dto';
 import { LocalAuthGuard } from './passport/local-auth.guard';
 import { User } from './user.decorator';
-import { UsersService } from 'src/users/users.service';
-import * as bcrypt from 'bcrypt';
-import { ChangePasswordDto } from './dto/changpass.dto';
 @Controller('auth')
 export class AuthController {
   constructor(

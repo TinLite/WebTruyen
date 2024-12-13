@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional } from 'class-validator';
+import { IsOptional } from 'class-validator';
 
 export class UpdateStoryDto {
   @IsOptional()
@@ -8,5 +8,5 @@ export class UpdateStoryDto {
   @IsOptional()
   genre: string;
   @IsOptional()
-  coverImage?: string[];
+  coverImage?: string;
 }

@@ -1,7 +1,10 @@
-import {Typography} from "@mui/material";
+import { UserContext } from "@/context/user-context";
+import { Typography } from "@mui/material";
+import { useContext } from "react";
 import { ListCardHorizontal } from "../components/list";
 
 export default function PageMain() {
+    const {user} = useContext(UserContext)
     return (
         <div>
             <div className="flex">
@@ -10,7 +13,7 @@ export default function PageMain() {
                     flexGrow: '1',
                     pb: '2rem',
                 }}>
-                    Welcome back, Tiến
+                    {user ? `Welcome back, ${user.displayname ?? user.username}` : 'Pick your story'}
                 </Typography>
             </div>
             <ListCardHorizontal />

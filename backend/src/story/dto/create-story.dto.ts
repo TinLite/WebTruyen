@@ -10,5 +10,5 @@ export class CreateStoryDto {
   genre: string;
   @IsOptional()
   authorId: Schema.Types.ObjectId;
-  coverImage?: string[];
+  coverImage?: string;
 }

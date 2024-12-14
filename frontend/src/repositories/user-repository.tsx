@@ -39,3 +39,48 @@ export async function getProfile(id: string = "me") {
     if (res.ok) return res.json();
   });
 }
+export async function lockUser(id: string) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/users/lock/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
+  if (!res.ok) {
+    return res.json();
+  }
+}
+export async function unlockUser(id: string) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/users/unlock/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
+  if (!res.ok) {
+    return res.json();
+  }
+}
+export async function deleteUser(id: string) {
+  const res = await fetch(
+    `${import.meta.env.VITE_API_URL}/api/users/delete/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
+  if (!res.ok) {
+    return res.json();
+  }
+}

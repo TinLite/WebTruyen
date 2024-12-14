@@ -94,11 +94,11 @@ export class UsersService {
   }
   //delete User
   async delete(id: string) {
-    await this.usersModel.updateOne({ _id: id }, { status: 0 }).exec();
+    await this.usersModel.findByIdAndDelete({ _id: id }).exec();
   }
   async getAllUser() {
     return await this.usersModel
-      .find({ status: true, role: { $ne: 'admin' } })
+      .find({ role: { $ne: 'admin' } })
       .select('+email')
       .exec();
   }

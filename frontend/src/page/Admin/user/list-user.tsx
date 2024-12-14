@@ -12,14 +12,25 @@ import {
   Modal,
   Box,
   TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LockPersonIcon from "@mui/icons-material/LockPerson";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
 import { User } from "../../../types/user-type";
-import { listUser } from "../../../repositories/user-repository";
+import {
+  deleteUser,
+  listUser,
+  lockUser,
+  unlockUser,
+} from "../../../repositories/user-repository";
 import { adminUpdateUser } from "../../../repositories/user-repository";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 const modalStyle = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -36,6 +47,30 @@ export default function ListUser() {
   const [users, setUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [open, setOpen] = useState(false);
+  const [openlock, setOpenlock] = useState(false);
+  const [openUnlock, setOpenUnlock] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  var [click, setClick] = useState("");
+
+  const handleClickDelete = () => {
+    setOpenDelete(true);
+  };
+  const handleClickDeleteClose = () => {
+    setOpenDelete(false);
+  };
+
+  const handleClickUnOpen = () => {
+    setOpenUnlock(true);
+  };
+  const handleClickUnClose = () => {
+    setOpenUnlock(false);
+  };
+  const handleClickOpen = () => {
+    setOpenlock(true);
+  };
+  const handleClickClose = () => {
+    setOpenlock(false);
+  };
   const [formData, setFormData] = useState({
     username: "",
     displayname: "",
@@ -89,10 +124,39 @@ export default function ListUser() {
     }
   };
 
+  const handleLockUser = async (id: string) => {
+    await lockUser(id)
+      .then(() => {
+        fetchUsers();
+        setOpenlock(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleUnlockUser = async (id: string) => {
+    await unlockUser(id)
+      .then(() => {
+        fetchUsers();
+        setOpenUnlock(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const handleDeleteUser = async (id: string) => {
+    await deleteUser(id)
+      .then(() => {
+        fetchUsers();
+        setOpenDelete(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   useEffect(() => {
     fetchUsers();
   }, []);
-
   return (
     <>
       <TableContainer component={Paper}>
@@ -130,18 +194,40 @@ export default function ListUser() {
                     size="small"
                     onClick={() => handleOpen(u)}
                   ></Button>
-                  <Button
-                    variant="outlined"
-                    startIcon={<LockPersonIcon />}
-                    className="mr-2"
-                    size="small"
-                    color="warning"
-                  ></Button>
+                  {u.status === true ? (
+                    <Button
+                      variant="outlined"
+                      startIcon={<LockPersonIcon />}
+                      className="mr-2"
+                      size="small"
+                      color="warning"
+                      onClick={() => {
+                        setClick(u._id);
+                        handleClickOpen();
+                      }}
+                    ></Button>
+                  ) : (
+                    <Button
+                      variant="outlined"
+                      startIcon={<LockOpenIcon />}
+                      className="mr-2"
+                      size="small"
+                      color="warning"
+                      onClick={() => {
+                        setClick(u._id);
+                        handleClickUnOpen();
+                      }}
+                    ></Button>
+                  )}
                   <Button
                     variant="outlined"
                     color="error"
                     startIcon={<DeleteIcon />}
                     size="small"
+                    onClick={() => {
+                      setClick(u._id);
+                      handleClickDelete();
+                    }}
                   ></Button>
                 </TableCell>
               </TableRow>
@@ -197,6 +283,57 @@ export default function ListUser() {
           </div>
         </Box>
       </Modal>
+      <Dialog
+        open={openlock}
+        keepMounted
+        onClose={handleClickClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"LOCK USER ?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Do you want to lock this user ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClickClose}>Cancel</Button>
+          <Button onClick={() => handleLockUser(click)}>Ok</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openUnlock}
+        keepMounted
+        onClose={handleClickUnClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"UNLOCK USER ?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Do you want to unlock this user ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClickUnClose}>Cancel</Button>
+          <Button onClick={() => handleUnlockUser(click)}>Ok</Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={openDelete}
+        keepMounted
+        onClose={handleClickDeleteClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{"DELETE USER ?"}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Do you want to delete this user ?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClickDeleteClose}>Cancel</Button>
+          <Button onClick={() => handleDeleteUser(click)}>Ok</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

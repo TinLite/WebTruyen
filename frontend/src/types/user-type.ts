@@ -8,6 +8,7 @@ export class User {
   create_at: Date;
   role: string[];
   rate: [];
+  status: boolean;
   wall?: string;
   constructor(
     _id: string,
@@ -19,6 +20,7 @@ export class User {
     create_at: Date,
     role: string[],
     rate: [],
+    status: boolean,
     wall: string
   ) {
     this._id = _id;
@@ -30,6 +32,7 @@ export class User {
     this.create_at = create_at;
     this.role = role;
     this.rate = rate;
+    this.status = status;
     this.wall = wall;
   }
 }

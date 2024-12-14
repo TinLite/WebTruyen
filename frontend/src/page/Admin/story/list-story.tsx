@@ -1,28 +1,27 @@
-import * as React from "react";
+import { Story } from "@/types/story-type";
+import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import {
+    Avatar,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import {
-  Avatar,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useEffect, useState } from "react";
-import { story } from "@/types/story-type";
 import { adminLockStory, listStory } from "../../../repositories/story-repository";
 
 export default function ListStory() {
-  const [Stories, setStories] = useState<story[]>([]);
+  const [Stories, setStories] = useState<Story[]>([]);
   const [open, setOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);

@@ -1,22 +1,22 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  NotFoundException,
   BadRequestException,
+  Body,
+  Controller,
+  Delete,
   ForbiddenException,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
   UnauthorizedException,
 } from '@nestjs/common';
+import mongoose from 'mongoose';
+import { User } from 'src/auth/user.decorator';
+import { StoryService } from 'src/story/story.service';
 import { ChapterService } from './chapter.service';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
-import { User } from 'src/auth/user.decorator';
-import mongoose, { Schema } from 'mongoose';
-import { StoryService } from 'src/story/story.service';
 
 @Controller('chapter')
 export class ChapterController {
@@ -118,5 +118,9 @@ export class ChapterController {
     const data = await this.chapterService.findAllChapterByStoryId(storyId);
     console.log(data);
     return data;
+  }
+  @Get('detail/:chapterId')
+  async findOne(@Param('chapterId') chapterId) {
+    return this.chapterService.findOne(chapterId);
   }
 }

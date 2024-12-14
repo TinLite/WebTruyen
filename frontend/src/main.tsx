@@ -39,11 +39,11 @@ const router = createBrowserRouter([
         element: <PageMain />,
       },
       {
-        path: "/truyen/:id",
+        path: "/truyen/:storyId",
         element: <PageStoryDetail />,
       },
       {
-        path: "/read/:id",
+        path: "/read/:chapterId",
         element: <PageReader />,
       },
     ],

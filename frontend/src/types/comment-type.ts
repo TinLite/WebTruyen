@@ -1,13 +1,13 @@
-import { story } from "@/types/story-type";
+import { Story } from "@/types/story-type";
 import { User } from "@/types/user-type";
-import { chapter } from "./chapter-types";
+import { Chapter } from "./chapter-types";
 
 export class comment {
   _id: string;
   author: User;
   content: string;
-  storyId: story;
-  chapterId: chapter;
+  storyId: Story;
+  chapterId: Chapter;
   created_at: Date;
   updated_at: Date;
   likes: User[];
@@ -17,8 +17,8 @@ export class comment {
     _id: string,
     author: User,
     content: string,
-    storyId: story,
-    chapterId: chapter,
+    storyId: Story,
+    chapterId: Chapter,
     created_at: Date,
     updated_at: Date,
     likes: User[],

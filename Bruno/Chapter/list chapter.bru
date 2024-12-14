@@ -1,0 +1,20 @@
+meta {
+  name: list chapter
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/api/chapter/create
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "StoryId":"675bc7d84ff06258c68a2fcc",
+    "Title":"Test tạo chapter",
+    "Content":"truyện kể về ...",
+    "ChapterNumber":"4"
+  }
+}

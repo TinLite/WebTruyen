@@ -1,6 +1,6 @@
 import { User } from "./user-type";
 
-export class story {
+export class Story {
   _id: string;
   title: string;
   description: string;

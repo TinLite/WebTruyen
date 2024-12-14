@@ -1,10 +1,9 @@
-import { Injectable, Patch } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateChapterDto } from './dto/create-chapter.dto';
 import { UpdateChapterDto } from './dto/update-chapter.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { Chapter } from './schemas/chapter.schema';
-import { Model } from 'mongoose';
-import { Story } from '../story/schemas/story.schema';
 
 @Injectable()
 export class ChapterService {
@@ -46,6 +45,7 @@ export class ChapterService {
         path: 'StoryId',
         select: 'status',
       })
+      .select("-Content")
       .exec();
       const result = data.filter(chapter => chapter.StoryId && chapter.StoryId.status === true);
     return result;

@@ -1,10 +1,11 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as session from 'express-session';
-import { createClient } from 'redis';
-import RedisStore from 'connect-redis';
+import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import RedisStore from 'connect-redis';
+import * as session from 'express-session';
 import * as passport from 'passport';
+import { createClient } from 'redis';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -44,6 +45,7 @@ async function bootstrap() {
 
   app.use(passport.initialize());
   app.use(passport.session());
+  app.useGlobalPipes(new ValidationPipe());
 
   await app.listen(3000);
 }

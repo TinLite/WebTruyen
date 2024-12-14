@@ -1,10 +1,10 @@
-import { story } from "./story-type";
+import { Story } from "./story-type";
 import { User } from "./user-type";
 
-export class chapter {
+export class Chapter {
   _id: string;
   UserId: User;
-  StoryId: story;
+  StoryId: Story;
   Title: string;
   Content: string;
   ChapterNumber: number;
@@ -13,7 +13,7 @@ export class chapter {
   constructor(
     _id: string,
     UserId: User,
-    StoryId: story,
+    StoryId: Story,
     Title: string,
     Content: string,
     ChapterNumber: number,

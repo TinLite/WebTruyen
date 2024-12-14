@@ -1,30 +1,25 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
-  Delete,
-  Request,
-  UseInterceptors,
-  Type,
-  UploadedFiles,
-  UploadedFile,
-  NotAcceptableException,
-  UnauthorizedException,
+  Controller,
   ForbiddenException,
+  Get,
+  NotAcceptableException,
+  Param,
+  Patch,
+  Post,
+  UnauthorizedException,
+  UploadedFiles,
+  UseInterceptors
 } from '@nestjs/common';
-import { StoryService } from './story.service';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { User } from 'src/auth/user.decorator';
 import { CreateStoryDto } from './dto/create-story.dto';
 import { UpdateStoryDto } from './dto/update-story.dto';
-import { User } from 'src/auth/user.decorator';
-import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import mongoose from 'mongoose';
+import { StoryService } from './story.service';
 
 @Controller('story')
 export class StoryController {
-  constructor(private readonly storyService: StoryService) {}
+  constructor(private readonly storyService: StoryService) { }
 
   @Post('/create')
   @UseInterceptors(
@@ -45,6 +40,11 @@ export class StoryController {
     }
     const authorId = userSession.id;
     return this.storyService.create(authorId, createStoryDto, files.files);
+  }
+
+  @Get("detail/:id")
+  async getDetail(@Param('id') id: string, @User() userSession) {
+    return (await this.storyService.findOne(id)).populate("authorId", "username displayname");
   }
 
   @Patch('update/:id')

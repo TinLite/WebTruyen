@@ -15,7 +15,7 @@ export class Rate {
   })
   StoryId: 'Story';
   @Prop()
-  Score: Number;
+  Score: number;
   @Prop({
     default: Date.now,
   })

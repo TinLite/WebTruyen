@@ -11,6 +11,7 @@ export async function adminLockStory(id: string) {
   );
   return res.json();
 }
+
 export async function listStory() {
   return fetch(`${import.meta.env.VITE_API_URL}/api/story/list`, {
     method: "GET",
@@ -21,4 +22,45 @@ export async function listStory() {
   }).then((res) => {
     if (res.ok) return res.json();
   });
+}
+
+
+export async function listUpdatedChapterStory() {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/newchapter/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+}
+
+export async function listNewStory() {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/newchapter/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+}
+
+export async function listHighestRatingStory() {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/rating/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+}
+
+export async function getStoryDetail(id: string) {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/detail/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
 }

@@ -1,23 +1,20 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   Get,
-  Post,
-  Body,
-  Patch,
   Param,
-  Delete,
-  UnauthorizedException,
-  BadRequestException,
+  Post,
+  UnauthorizedException
 } from '@nestjs/common';
-import { RateService } from './rate.service';
-import { CreateRateDto } from './dto/create-rate.dto';
-import { UpdateRateDto } from './dto/update-rate.dto';
-import { User } from 'src/auth/user.decorator';
 import mongoose from 'mongoose';
+import { User } from 'src/auth/user.decorator';
+import { CreateRateDto } from './dto/create-rate.dto';
+import { RateService } from './rate.service';
 
 @Controller('rate')
 export class RateController {
-  constructor(private readonly rateService: RateService) {}
+  constructor(private readonly rateService: RateService) { }
 
   @Post('/create/story/:storyId')
   async createRate(
@@ -31,7 +28,27 @@ export class RateController {
     if (!mongoose.Types.ObjectId.isValid(storyId)) {
       throw new BadRequestException('Invalid story ID');
     }
+    if (createRateDto.Score < 0 || createRateDto.Score > 10) {
+      throw new BadRequestException("Score can't be a negative number or higher than 10");
+    }
     const userId = userSession.id;
-    return await this.rateService.createRate(userId, storyId, createRateDto);
+    await this.rateService.upsert(userId, storyId, createRateDto);
+    return this.getSummary(storyId, userSession, createRateDto);
+  }
+
+  @Get("/summary/story/:storyId")
+  async getSummary(@Param("storyId") storyId: string, @User() user, userRate?) {
+    const allRatings = await this.rateService.findAllByStoryId(storyId);
+    let sumScore = 0.0;
+    allRatings.forEach((v) => sumScore += v.Score)
+    const averateScore = sumScore / allRatings.length
+    if (user && !userRate) {
+      userRate = await this.rateService.findUserRateStory(user.id, storyId);
+    }
+    return {
+      count: allRatings.length,
+      average: averateScore,
+      userRate: userRate ? parseFloat(userRate.Score) : null
+    }
   }
 }

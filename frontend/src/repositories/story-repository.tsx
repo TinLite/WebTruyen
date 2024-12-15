@@ -85,3 +85,24 @@ export async function createStory(data: { title: string, description: string }) 
     body: JSON.stringify(data),
   })
 }
+
+export async function updateStory(id: string, data: { title: string, description: string }) {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/update/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+}
+
+export async function updateStoryCover(id: string, coverFile: File) {
+  const formData = new FormData();
+  formData.append("files", coverFile);
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/update/${id}`, {
+    method: "PATCH",
+    credentials: "include",
+    body: formData,
+  })
+}

@@ -59,8 +59,8 @@ export class StoryController {
   async updateStory(
     @Param('id') id: string,
     @Body() updateStoryDto: UpdateStoryDto,
-    @UploadedFiles() files: { files: Express.Multer.File[] },
     @User() userSession,
+    @UploadedFiles() files?: { files: Express.Multer.File[] },
   ) {
     if (!userSession) {
       throw new Error('User not authenticated');
@@ -73,7 +73,7 @@ export class StoryController {
     if (story.authorId.toString() !== userSession.id) {
       throw new Error('You are not the author of this story');
     }
-    return this.storyService.updateStory(id, updateStoryDto, files.files);
+    return this.storyService.updateStory(id, updateStoryDto, files?.files);
   }
   @Patch('delete/:id')
   async deleteStory(@Param('id') id: string, @User() userSession) {

@@ -1,7 +1,8 @@
 import { Story } from '@/types/story-type';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import Markdown from 'react-markdown';
+import { Link, useNavigate } from "react-router-dom";
 
 export function StoryListItem({ title = "", imageUrl = "", url = "", substitle = "" }: { title?: string, imageUrl?: string, url?: string, substitle?: string }) {
     return (
@@ -26,6 +27,42 @@ export function StoryListItem({ title = "", imageUrl = "", url = "", substitle =
         </Card>
     )
 };
+
+export function ListStoryCol({ storyList = [] }: { storyList: Story[] }) {
+    const navigate = useNavigate();
+    return (
+        <div className="flex flex-col gap-6">
+            {
+                storyList.map((story) => {
+                    return (
+                        <Card sx={{
+                            boxShadow: 'none'
+                        }}>
+                            <CardActionArea onClick={() => navigate(`/truyen/${story._id}`)}>
+                                <CardContent>
+                                    <div className="flex gap-4">
+                                        <img src={story.coverImage} alt="" className="aspect-square w-24 md:w-32 rounded-3xl object-cover" />
+                                        <div className="flex flex-col self-stretch">
+                                            <Typography variant="h6" className="-mt-1">{story.title}</Typography>
+                                            <div className="flex-grow">
+                                                <Markdown className="line-clamp-2 md:line-clamp-3">
+                                                    {story.description}
+                                                </Markdown>
+                                            </div>
+                                            <Typography variant="caption">
+                                                <span>Last updated</span> - <span>{story.updateAt?.toDateString()}</span>
+                                            </Typography>
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    )
+                })
+            }
+        </div>
+    )
+}
 
 export function ListCardHorizontal({ title, urlMore = '#', storyList = [] }: { title?: string, urlMore?: string, storyList?: Story[] }) {
 

@@ -64,3 +64,13 @@ export async function getStoryDetail(id: string) {
     credentials: "include",
   })
 }
+
+export async function getStoriesCreatedByMe() {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/my/list`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  })
+}

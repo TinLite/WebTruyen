@@ -16,6 +16,8 @@ import ListComment from "./page/Admin/comment/list-comment.tsx";
 import Statistical from "./page/Admin/component/statistical.tsx";
 import ListStory from "./page/Admin/story/list-story.tsx";
 import ListUser from "./page/Admin/user/list-user.tsx";
+import { PageBookmarked } from "./page/bookmarks.tsx";
+import { PageReadHistory } from "./page/history.tsx";
 import PageMain from "./page/home.tsx";
 import PageLogin from "./page/login.tsx";
 import { PageReader } from "./page/page-reader.tsx";
@@ -46,6 +48,14 @@ const router = createBrowserRouter([
         path: "/read/:chapterId",
         element: <PageReader />,
       },
+      {
+        path: "/bookmark",
+        element: <PageBookmarked />,
+      },
+      {
+        path: "/history",
+        element: <PageReadHistory />,
+      }
     ],
   },
   {

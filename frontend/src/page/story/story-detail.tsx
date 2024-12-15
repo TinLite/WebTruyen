@@ -8,6 +8,7 @@ import { Story } from "@/types/story-type";
 import { BookmarkBorder } from "@mui/icons-material";
 import { Button, Card, CardActionArea, CardContent, Container, Rating, Typography } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
+import Markdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
 
 export function PageStoryDetail() {
@@ -24,7 +25,7 @@ export function PageStoryDetail() {
         userRate: null,
     });
     const [chapterList, setChapterList] = useState<Chapter[]>();
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const [follows, setFollow] = useState<boolean>(user?.followstory?.includes(storyId ?? "") ?? false);
 
     let isReadable = chapterList && chapterList.length > 0;
@@ -46,10 +47,10 @@ export function PageStoryDetail() {
                                 setFollow(true);
                         })
                     else
-                    removeFromBookmark(storyId).then((res) => {
-                        if (res.ok)
-                            setFollow(false);
-                    })
+                        removeFromBookmark(storyId).then((res) => {
+                            if (res.ok)
+                                setFollow(false);
+                        })
                 }}
             >{
                     follows ? `Unbookmark` : `Bookmark`
@@ -60,9 +61,9 @@ export function PageStoryDetail() {
     useEffect(() => {
         if (storyId) {
             getStoryDetail(storyId).then((res) => {
-                if (res.ok){
+                if (res.ok) {
                     res.json().then(setStory);
-                    
+
                 }
             })
             getRatingSummary(storyId).then((res) => {
@@ -85,7 +86,11 @@ export function PageStoryDetail() {
                     <div className="flex-grow">
                         <Typography variant="h4">{story?.title ?? "Loading..."}</Typography>
                         <Typography variant="caption">Last update: 01/01/2024</Typography>
-                        <Typography className="line-clamp-3">{story?.description}</Typography>
+                        <Typography className="line-clamp-3">
+                            <Markdown>
+                                {story?.description}
+                            </Markdown>
+                        </Typography>
                     </div>
                     <div className="gap-6 hidden md:flex">
                         {actions}

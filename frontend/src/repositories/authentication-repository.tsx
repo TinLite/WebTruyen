@@ -16,13 +16,13 @@ export async function logout() {
     })
 }
 
-export async function register(name: string, email: string, sdt: string, password: string) {
-    return fetch(`${import.meta.env.VITE_API_URL}/api/auth/register`, {
+export async function register(username: string, email: string, displayname: string, password: string) {
+    return fetch(`${import.meta.env.VITE_API_URL}/api/users/create`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, email, sdt, password }),
+        body: JSON.stringify({ username, email, displayname, password }),
         credentials: 'include',
     })
 }

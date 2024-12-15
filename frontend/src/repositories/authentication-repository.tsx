@@ -9,12 +9,12 @@ export async function login(email: string, password: string) {
     })
 }
 
-// export async function logout() {
-//     return fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
-//         method: 'POST',
-//         credentials: 'include',
-//     })
-// }
+export async function logout() {
+    return fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+    })
+}
 
 export async function register(username: string, email: string, displayname: string, password: string) {
     return fetch(`${import.meta.env.VITE_API_URL}/api/users/create`, {

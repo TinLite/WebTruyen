@@ -7,7 +7,7 @@ import { Users } from 'src/users/schemas/users.schema';
 export class FollowsService {
   constructor(
     @InjectModel(Users.name) private readonly usersModel: Model<Users>,
-  ) { }
+  ) {}
   async followStory(userId, storyId) {
     console.log(userId, storyId);
     await this.usersModel.findByIdAndUpdate(
@@ -29,14 +29,14 @@ export class FollowsService {
         },
       },
       { new: true },
-    )
+    );
   }
   async getFollowStory(userId) {
-    console.log(await this
-      .usersModel
-      .findById(userId))
-    return this
-      .usersModel
+    // console.log(await this
+    //   .usersModel
+    //   .findById(userId))
+    console.log(userId);
+    return this.usersModel
       .findById(userId)
       .select('followstory')
       .populate('followstory')

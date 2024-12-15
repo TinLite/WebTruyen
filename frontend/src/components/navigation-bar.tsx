@@ -46,7 +46,7 @@ export function NavigationBar() {
                     <ListItemText primary="Followed stories" />
                 </ListItemButton>
             </ListItem>
-            <ListItem disablePadding>
+            <ListItem disablePadding component={NavLink} to={"/history"} className='text-inherit'>
                 <ListItemButton>
                     <ListItemIcon>
                         <HistoryIcon />

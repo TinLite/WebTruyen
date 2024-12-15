@@ -10,7 +10,7 @@ export class comment {
   chapterId: Chapter;
   created_at: Date;
   updated_at: Date;
-  likes: User[];
+  likes: string[];
   replyTo?: comment;
   hasReply?: boolean;
   constructor(
@@ -21,7 +21,7 @@ export class comment {
     chapterId: Chapter,
     created_at: Date,
     updated_at: Date,
-    likes: User[],
+    likes: string[],
     replyTo?: comment,
     hasReply?: boolean
   ) {

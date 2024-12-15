@@ -2,13 +2,13 @@ import { Story } from "@/types/story-type";
 import DeleteIcon from "@mui/icons-material/Delete";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
-    Avatar,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
+  Avatar,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -18,11 +18,16 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { useEffect, useState } from "react";
-import { adminLockStory, listStory } from "../../../repositories/story-repository";
+import {
+  adminLockStory,
+  listStory,
+} from "../../../repositories/story-repository";
+import { useNavigate } from "react-router-dom";
 
 export default function ListStory() {
   const [Stories, setStories] = useState<Story[]>([]);
   const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -47,15 +52,13 @@ export default function ListStory() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   useEffect(() => {
     fetchStory();
   }, []);
   const handleViewStory = async (id: string) => {
-    alert(
-      "Thằng Tèo nó chưa nhéc link vào xem chapter của truyện này bạn ơi :)))"
-    );
+    navigate(`/truyen/${id}`);
   };
   return (
     <TableContainer component={Paper}>

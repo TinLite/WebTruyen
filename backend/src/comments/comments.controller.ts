@@ -203,9 +203,9 @@ export class CommentsController {
       throw new UnauthorizedException('User not authenticated');
     }
     // console.log(userSession.role);
-    if (!userSession.role.includes('admin')) {
-      throw new ForbiddenException('User not authorized to view this comment');
-    }
+    // if (!userSession.role.includes('admin')) {
+    //   throw new ForbiddenException('User not authorized to view this comment');
+    // }
     const post = await this.storyService.findOne(storyId);
     if (!post) {
       throw new NotFoundException('Post not found');

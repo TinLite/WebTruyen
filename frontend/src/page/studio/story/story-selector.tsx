@@ -1,10 +1,11 @@
+import { getStoriesCreatedByMe } from "@/repositories/story-repository";
 import { Card, CardActionArea, CardContent, CardMedia, Container, CssBaseline, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StoryListItem } from "../../../components/list";
-import { getStoriesCreatedByMe } from "@/repositories/story-repository";
-import { useEffect } from "react";
 
 export function PageStudioStorySelector() {
+    const [stories, setStories] = useState([]);
     useEffect(() => {
         getStoriesCreatedByMe().then(
             (res) => {
@@ -12,7 +13,7 @@ export function PageStudioStorySelector() {
                     res.json().then(setStories);
                 }
             }
-        )})
+        )
     })
     return <div>
         <CssBaseline />

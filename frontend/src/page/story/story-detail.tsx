@@ -1,3 +1,4 @@
+import { UserContext } from "@/context/user-context";
 import { addToBookmark, removeFromBookmark } from "@/repositories/bookmark-repository";
 import { getAllChapterByStoryId } from "@/repositories/chapter-repository";
 import { getRatingSummary } from "@/repositories/rating-repository";
@@ -6,7 +7,7 @@ import { Chapter } from "@/types/chapter-types";
 import { Story } from "@/types/story-type";
 import { BookmarkBorder } from "@mui/icons-material";
 import { Button, Card, CardActionArea, CardContent, Container, Rating, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export function PageStoryDetail() {
@@ -23,7 +24,8 @@ export function PageStoryDetail() {
         userRate: null,
     });
     const [chapterList, setChapterList] = useState<Chapter[]>();
-    const [follows, setFollow] = useState<boolean>(false);
+    const {user, setUser} = useContext(UserContext);
+    const [follows, setFollow] = useState<boolean>(user?.followstory?.includes(storyId ?? "") ?? false);
 
     let isReadable = chapterList && chapterList.length > 0;
     const actions = (
@@ -50,7 +52,7 @@ export function PageStoryDetail() {
                     })
                 }}
             >{
-                    follows ? `Unfollow` : `Follow`
+                    follows ? `Unbookmark` : `Bookmark`
                 }</Button>
         </>
     )
@@ -58,8 +60,10 @@ export function PageStoryDetail() {
     useEffect(() => {
         if (storyId) {
             getStoryDetail(storyId).then((res) => {
-                if (res.ok)
+                if (res.ok){
                     res.json().then(setStory);
+                    
+                }
             })
             getRatingSummary(storyId).then((res) => {
                 if (res.ok)

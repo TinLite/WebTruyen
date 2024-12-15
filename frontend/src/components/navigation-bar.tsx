@@ -10,7 +10,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import UploadIcon from '@mui/icons-material/Upload';
 import { Divider, List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader } from "@mui/material";
 import { useContext } from 'react';
-import { NavLink, Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Link as RouterLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 export function NavigationBar() {
     const { user, setUser } = useContext(UserContext);
@@ -43,7 +43,7 @@ export function NavigationBar() {
                     <ListItemIcon>
                         <BookIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Bookmark" />
+                    <ListItemText primary="Followed stories" />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>
@@ -111,6 +111,7 @@ export function NavigationBar() {
 
 export function CreatorStudioNavigationBar() {
     const navigate = useNavigate();
+    const { storyId } = useParams();
     return (
         <List sx={{
             flexGrow: 1,
@@ -118,7 +119,8 @@ export function CreatorStudioNavigationBar() {
             flexDirection: 'column'
         }}>
             <ListItem disablePadding>
-                <ListItemButton selected>
+                {/* @ts-expect-error */}
+                <ListItemButton LinkComponent={RouterLink} to={`/studio/${storyId}`} className='text-inherit'>
                     <ListItemIcon>
                         <HomeIcon />
                     </ListItemIcon>
@@ -127,7 +129,8 @@ export function CreatorStudioNavigationBar() {
             </ListItem>
             <Divider />
             <ListItem disablePadding>
-                <ListItemButton>
+                {/* @ts-expect-error */}
+                <ListItemButton LinkComponent={RouterLink} to={`/studio/${storyId}/chapter`}>
                     <ListItemIcon>
                         <FormatListNumbered />
                     </ListItemIcon>

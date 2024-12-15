@@ -23,7 +23,7 @@ import PageLogin from "./page/login.tsx";
 import { PageReader } from "./page/page-reader.tsx";
 import PageRegister from "./page/register.tsx";
 import { PageStoryDetail } from "./page/story/story-detail.tsx";
-import { PageStudioChapterEdit } from "./page/studio/story/chapter-editor.tsx";
+import { PageStudioChapterCreate, PageStudioChapterEdit } from "./page/studio/story/chapter-editor.tsx";
 import { PageStudioChapterSelector } from "./page/studio/story/chapter.tsx";
 import { PageStudioStoryDetail } from "./page/studio/story/story-detail.tsx";
 import { PageStudioStoryNew } from "./page/studio/story/story-new.tsx";
@@ -88,6 +88,10 @@ const router = createBrowserRouter([
           {
             path: "chapter",
             element: <PageStudioChapterSelector />
+          },
+          {
+            path: "chapter/new",
+            element: <PageStudioChapterCreate />
           },
           {
             path: "chapter/:chapterId",

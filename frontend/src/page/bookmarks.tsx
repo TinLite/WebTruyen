@@ -26,7 +26,7 @@ export function PageBookmarked() {
                 flexGrow: '1',
                 pb: '2rem',
             }}>
-                Bookmarks
+                Followed stories
             </Typography>
         </div>
         <ListStoryCol storyList={bookmarks} />

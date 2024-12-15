@@ -43,7 +43,7 @@ export function NavigationBar() {
                     <ListItemIcon>
                         <BookIcon />
                     </ListItemIcon>
-                    <ListItemText primary="Bookmark" />
+                    <ListItemText primary="Followed stories" />
                 </ListItemButton>
             </ListItem>
             <ListItem disablePadding>

@@ -38,7 +38,7 @@ export function NavigationBar() {
                 </ListItemButton>
             </ListItem>
             <Divider />
-            <ListItem disablePadding>
+            <ListItem disablePadding component={NavLink} to={"/bookmark"} className='text-inherit'>
                 <ListItemButton>
                     <ListItemIcon>
                         <BookIcon />

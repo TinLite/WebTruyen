@@ -9,7 +9,7 @@ export async function getAllChapterByStoryId(storyId: string) {
 }
 
 export async function getChapter(chapterId: string) {
-    return fetch(`${import.meta.env.VITE_API_URL}/api/chapter/list/${chapterId}`, {
+    return fetch(`${import.meta.env.VITE_API_URL}/api/chapter/detail/${chapterId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

@@ -1,8 +1,19 @@
 import { Card, CardActionArea, CardContent, CardMedia, Container, CssBaseline, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
 import { StoryListItem } from "../../../components/list";
+import { getStoriesCreatedByMe } from "@/repositories/story-repository";
+import { useEffect } from "react";
 
 export function PageStudioStorySelector() {
+    useEffect(() => {
+        getStoriesCreatedByMe().then(
+            (res) => {
+                if (res.ok) {
+                    res.json().then(setStories);
+                }
+            }
+        )})
+    })
     return <div>
         <CssBaseline />
         <div className="text-center my-12">

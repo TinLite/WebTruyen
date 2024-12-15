@@ -126,4 +126,12 @@ export class StoryController {
   async listStoryRating() {
     return await this.storyService.getStoriesWithMostRating();
   }
+  // Story created by logged in user
+  @Get('/my/list')
+  async listMyStory(@User() userSession) {
+    if (!userSession) {
+      throw new UnauthorizedException('User not authenticated');
+    }
+    return await this.storyService.findAllByAuthorId(userSession.id);
+  }
 }

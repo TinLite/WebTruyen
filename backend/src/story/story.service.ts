@@ -69,6 +69,12 @@ export class StoryService {
       .populate('authorId', 'displayname')
       .exec();
   }
+  async findAllByAuthorId(authorId: string) {
+    return await this.storyModel
+      .find({ authorId: authorId })
+      .populate('-authorId')
+      .exec();
+  }
   async countStory() {
     const data = await this.storyModel.find({ status: true }).exec();
     return data.length;

@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { CreateHistoryDto } from './dto/create-history.dto';
 import { UpdateHistoryDto } from './dto/update-history.dto';
-import { InjectModel } from '@nestjs/mongoose';
 import { History } from './schemas/history.schema';
-import { Model } from 'mongoose';
-import { Story } from '../story/schemas/story.schema';
 
 @Injectable()
 export class HistoryService {
@@ -17,14 +16,13 @@ export class HistoryService {
     chapterId,
     createHistoryDto: CreateHistoryDto,
   ) {
-    const data = await this.historyModel.create({
-      ...createHistoryDto,
-      userId: userId,
-      storyId: storyId,
-      chapterId: chapterId,
-    });
+    const existingHistory = await this.historyModel.findOneAndUpdate(
+      { userId: userId, storyId: storyId },
+      { ...createHistoryDto, chapterId: chapterId },
+      { new: true, upsert: true }
+    );
     return {
-      _id: data._id,
+      _id: existingHistory._id,
     };
   }
   async findAllHistory(userId) {

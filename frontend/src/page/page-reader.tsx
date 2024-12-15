@@ -1,5 +1,12 @@
+import { UserContext } from "@/context/user-context";
+import { getChapter } from "@/repositories/chapter-repository";
+import { createHistory } from "@/repositories/history-repository";
+import { Chapter } from "@/types/chapter-types";
 import { ThumbUpOffAlt } from "@mui/icons-material";
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardActionArea, CardContent, Container, Divider, Grid2, IconButton, Typography } from "@mui/material";
+import { Accordion, AccordionDetails, AccordionSummary, Container, Divider, IconButton, Link, Typography } from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import Markdown from "react-markdown";
+import { Link as RouterLink, useNavigate, useParams } from "react-router-dom";
 
 function SectionComment() {
 
@@ -51,38 +58,54 @@ function SectionComment() {
 }
 
 export function PageReader() {
+
+    const [chapter, setChapter] = useState<Chapter>();
+    const { chapterId } = useParams();
+    const navigate = useNavigate();
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        getChapter(chapterId ?? "").then((res) => {
+            if (res.ok) {
+                res.json().then(setChapter);
+
+            }
+
+            else
+                navigate("/404");
+        });
+    }, [])
+
+    useEffect(() => {
+        if (user && chapter && chapterId) {
+            createHistory(
+                // @ts-expect-error
+                chapter?.StoryId,
+                chapterId ?? "",
+            ).then((res) => {
+                console.log(res)
+                if (!res.ok) {
+                    console.log(res)
+                    console.error("Failed to create history");
+                }
+            })
+        }
+    }, [chapter, user, chapterId])
+
     return (
         <Container maxWidth="sm">
             <div>
-                <Typography variant="h4">Chapter 1</Typography>
-                <Typography variant="h5">Lorem ipsum dolor sit amet consectetur adipisicing elit.</Typography>
-                <div>
-                    Est. read time: 26 mins
-                </div>
+                <Link component={RouterLink} to={`/truyen/${chapter?.StoryId}`} className="decoration-transparent text-inherit">
+                    Quay lại
+                </Link>
+                <Typography variant="h4">Chapter {chapter?.ChapterNumber}</Typography>
+                <Typography variant="h5">{chapter?.Title}</Typography>
             </div>
             <Divider className="my-4" />
             <div>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
-                <Typography variant="body1">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga cum, repellat soluta expedita repudiandae quo rerum omnis magnam ratione quis aliquid placeat sapiente voluptas qui dolore doloremque perferendis natus voluptatem! Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum delectus fuga totam in mollitia ducimus eligendi soluta blanditiis sequi reiciendis esse quo voluptatum, dolor aperiam perferendis vero maxime nihil veritatis!</Typography>
+                <Markdown>{chapter?.Content}</Markdown>
             </div>
-            <Grid2 container className="mt-4">
+            {/* <Grid2 container className="mt-4">
                 <Grid2 size={6}>
                     <Card sx={{
                         borderRadius: "0px"
@@ -115,7 +138,7 @@ export function PageReader() {
                         </CardActionArea>
                     </Card>
                 </Grid2>
-            </Grid2>
+            </Grid2> */}
             <SectionComment />
         </Container>
     )

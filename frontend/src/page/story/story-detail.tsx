@@ -1,3 +1,4 @@
+import { addToBookmark, removeFromBookmark } from "@/repositories/bookmark-repository";
 import { getAllChapterByStoryId } from "@/repositories/chapter-repository";
 import { getRatingSummary } from "@/repositories/rating-repository";
 import { getStoryDetail } from "@/repositories/story-repository";
@@ -22,10 +23,35 @@ export function PageStoryDetail() {
         userRate: null,
     });
     const [chapterList, setChapterList] = useState<Chapter[]>();
+    const [follows, setFollow] = useState<boolean>(false);
+
+    let isReadable = chapterList && chapterList.length > 0;
     const actions = (
         <>
-            <Button variant="contained">Continue reading</Button>
-            <Button variant="outlined">Save to bookmark</Button>
+            <Button
+                variant="contained"
+                disabled={!isReadable}
+                onClick={() => navigate(`/read/${chapterList?.at(0)?._id}`)}>
+                {isReadable ? `Read` : `No chapter to read`}
+            </Button>
+            <Button
+                variant="outlined"
+                onClick={() => {
+                    if (!storyId) return;
+                    if (!follows)
+                        addToBookmark(storyId).then((res) => {
+                            if (res.ok)
+                                setFollow(true);
+                        })
+                    else
+                    removeFromBookmark(storyId).then((res) => {
+                        if (res.ok)
+                            setFollow(false);
+                    })
+                }}
+            >{
+                    follows ? `Unfollow` : `Follow`
+                }</Button>
         </>
     )
 
@@ -80,7 +106,7 @@ export function PageStoryDetail() {
                     <Card sx={{
                         boxShadow: 'none'
                     }}>
-                        <CardActionArea onClick={() => navigate("/read/1")}>
+                        <CardActionArea onClick={() => navigate(`/read/${chapter._id}`)}>
                             <CardContent>
                                 <div className="flex flex-col self-stretch">
                                     <Typography variant="h6" className="-mt-1">Chapter {chapter.ChapterNumber}: {chapter.Title}</Typography>
@@ -88,7 +114,8 @@ export function PageStoryDetail() {
                                         {/* <Typography variant="body2" className="line-clamp-2 md:line-clamp-3">{chapter.}</Typography> */}
                                     </div>
                                     <Typography variant="caption">
-                                        <span>Today</span> - <span>24 mins</span>
+                                        <span>Today</span>
+                                        {/* - <span>24 mins</span> */}
                                     </Typography>
                                 </div>
                             </CardContent>

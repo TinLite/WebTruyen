@@ -72,7 +72,7 @@ export class StoryService {
   async findAllByAuthorId(authorId: string) {
     return await this.storyModel
       .find({ authorId: authorId })
-      .populate('-authorId')
+      .select('-authorId')
       .exec();
   }
   async countStory() {

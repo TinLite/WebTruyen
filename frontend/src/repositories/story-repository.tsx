@@ -74,3 +74,14 @@ export async function getStoriesCreatedByMe() {
     credentials: "include",
   })
 }
+
+export async function createStory(data: { title: string, description: string }) {
+  return fetch(`${import.meta.env.VITE_API_URL}/api/story/create`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(data),
+  })
+}

@@ -31,7 +31,7 @@ export default function PageMain() {
                     res.json().then(setHighRate);
             }
         )
-    })
+    }, [])
 
     return (
         <div>

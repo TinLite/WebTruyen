@@ -30,6 +30,9 @@ export class AuthController {
     if (req.session.user) {
       throw new ForbiddenException('You are already logged in');
     }
+    if (!req.user.status) {
+      throw new ForbiddenException('User is banned');
+    }
     req.session.user = req.user;
     return req.user;
   }

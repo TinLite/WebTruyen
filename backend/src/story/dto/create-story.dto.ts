@@ -6,7 +6,7 @@ export class CreateStoryDto {
   title: string;
   @IsString()
   description: string;
-  @IsString()
+  @IsOptional()
   genre: string;
   @IsOptional()
   authorId: Schema.Types.ObjectId;

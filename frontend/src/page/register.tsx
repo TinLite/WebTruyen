@@ -41,10 +41,10 @@ export default function PageRegister() {
             <div className="w-screen h-screen bg-[url('/hagiang.jpg')] bg-bottom bg-no-repeat bg-cover flex flex-row-reverse">
                 <div className="grid place-items-center w-full bg-[#001731AB]">
                     <div className="bg-[#001731] px-12 rounded-3xl py-6 w-full max-w-md">
-                        <Typography variant="h5" className="text-center">Đăng ký</Typography>
+                        <Typography variant="h5" className="text-center">Create an account</Typography>
                         <form onSubmit={formSubmitEvent} className="py-6 grid gap-2">
                             <TextField
-                                label="Tên tài khoản"
+                                label="Username"
                                 size="small"
                                 className="w-full"
                                 name="name"
@@ -53,7 +53,7 @@ export default function PageRegister() {
                                 aria-required
                             />
                             <TextField
-                                label="Tên hiển thị"
+                                label="Display Name"
                                 onChange={(e) => formData.displayname = e.target.value}
                                 size="small"
                                 className="w-full"
@@ -72,7 +72,7 @@ export default function PageRegister() {
                                 aria-required
                             />
                             <TextField
-                                label="Mật khẩu"
+                                label="Password"
                                 onChange={(e) => formData.password = e.target.value}
                                 size="small"
                                 className="w-full"
@@ -82,7 +82,7 @@ export default function PageRegister() {
                                 aria-required
                             />
                             <TextField
-                                label="Nhập lại mật khẩu"
+                                label="Repeat password"
                                 onChange={(e) => formData.repeatPassword = e.target.value}
                                 size="small"
                                 className="w-full"
@@ -90,9 +90,9 @@ export default function PageRegister() {
                                 required
                                 aria-required
                             />
-                            <Button type="submit" variant="contained">Đăng ký</Button>
-                            <div className="text-center">Đã có tài khoản? {''}
-                                <Link to="/login" component={RouterLink}>Đăng nhập</Link>
+                            <Button type="submit" variant="contained">Create account</Button>
+                            <div className="text-center">Already have an account? {''}
+                                <Link to="/login" component={RouterLink}>Login now</Link>
                             </div>
                         </form>
                     </div>

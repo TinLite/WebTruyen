@@ -39,7 +39,7 @@ export class StoryController {
       throw new Error('User not authenticated');
     }
     const authorId = userSession.id;
-    return this.storyService.create(authorId, createStoryDto, files.files);
+    return this.storyService.create(authorId, createStoryDto, files?.files ?? []);
   }
 
   @Get("detail/:id")

@@ -26,7 +26,7 @@ export default function PageLogin() {
             if (res.ok)
                 getProfile().then(setUser)
             else {
-                openAlert("Sai tài khoản hoặc mật khẩu");
+                res.json().then((data) => openAlert(data.message))
             }
         })
     }
@@ -45,7 +45,7 @@ export default function PageLogin() {
             <div className="w-screen h-screen bg-[url('https://wallpapercave.com/wp/wp9523242.jpg')] bg-bottom bg-no-repeat bg-cover flex flex-row-reverse">
                 <div className="grid place-items-center w-full md:w-3/5 bg-[#001731AB]">
                     <div className="bg-[#001731] px-12 rounded-3xl py-6 w-full max-w-md">
-                        <Typography variant="h5" className="text-center">Đăng nhập</Typography>
+                        <Typography variant="h5" className="text-center">Login</Typography>
                         <Dialog open={alertOpen} onClose={() => setAlertOpen(false)}>
                             <DialogContent>
                                 {alertMessage}
@@ -77,9 +77,9 @@ export default function PageLogin() {
                                 }}
                                 required
                             />
-                            <Button type="submit" variant="contained">Đăng nhập</Button>
-                            <div className="text-center">Bạn chưa có tài khoản? {''}
-                                <Link to="/register" component={RouterLink}>Đăng ký ngay</Link>
+                            <Button type="submit" variant="contained">Login</Button>
+                            <div className="text-center">Don't have account? {''}
+                                <Link to="/register" component={RouterLink}>Let's create one</Link>
                             </div>
                         </form>
                     </div>
